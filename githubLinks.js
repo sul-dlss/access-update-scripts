@@ -6,7 +6,7 @@
 
 // Repo order used in autupdate.sh and status table
 // https://github.com/sul-dlss/access-update-scripts/blob/master/autupdate.sh
-var repoList= "purl stacks sul-embed purl-fetcher content_search course_reserves discovery-dispatcher earthworks exhibits library_hours_rails sul-bento-app sul-directory sul-requests sw-indexer SearchWorks revs dlme arclight-demo vatican_exhibits revs-indexer-service bassi_veratti editstore-updater mods_display_app mirador_sul frda relevancy_dashboard stanford-arclight searchworks-status"
+var repoList= "purl stacks sul-embed purl-fetcher content_search course_reserves earthworks exhibits library_hours_rails sul-bento-app sul-directory sul-requests SearchWorks revs dlme arclight-demo vatican_exhibits revs-indexer-service bassi_veratti editstore-updater mods_display_app mirador_sul frda relevancy_dashboard stanford-arclight searchworks-status"
 repoList = repoList.split(' ')
 
 // Retreive PR links
