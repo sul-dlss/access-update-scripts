@@ -7,7 +7,7 @@ mkdir gem_report
 mkdir npm_report
 
 # Ruby / Rails applications
-for i in purl stacks sul-embed purl-fetcher content_search course_reserves earthworks exhibits library_hours_rails sul-bento-app sul-directory sul-requests SearchWorks revs dlme arclight-demo vatican_exhibits revs-indexer-service bassi_veratti editstore-updater mods_display_app mirador_sul frda relevancy_dashboard stanford-arclight; do
+for i in purl stacks sul-embed purl-fetcher content_search course_reserves earthworks exhibits library_hours_rails sul-bento-app sul-directory sul-requests SearchWorks revs dlme arclight-demo vatican_exhibits revs-indexer-service bassi_veratti editstore-updater mods_display_app mirador_sul frda relevancy_dashboard stanford-arclight searchworks_traject_indexer; do
   echo $i
   cd $TMPDIR/.autoupdate
   git clone git@github.com:sul-dlss/$i
