@@ -32,6 +32,7 @@ for i in searchworks-status; do
   git checkout -B update-dependencies
   git reset --hard  origin/master
   npm update > ../npm_report/$i.txt &&
+  npm audit fix > ../npm_report/$i.txt &&
   git add package-lock.json package.json &&
   git commit -m "Update dependencies" &&
   git push origin update-dependencies &&
