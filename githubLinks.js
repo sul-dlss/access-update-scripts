@@ -1,8 +1,8 @@
 // Paste this script in your browser console
 
 // Enter GitHub search params @ https://github.com/pulls
-// is:pr org:sul-dlss head:update-dependencies created:2018-09-17
-// example: https://github.com/pulls?utf8=%E2%9C%93&q=is%3Apr+org%3Asul-dlss+head%3Aupdate-dependencies+created%3A2018-09-17
+// is:pr org:sul-dlss head:update-dependencies is:open 
+// example: https://github.com/pulls?utf8=✓&q=is%3Apr+org%3Asul-dlss+head%3Aupdate-dependencies+is%3Aopen+
 
 // Repo order used in autupdate.sh and status table
 // https://github.com/sul-dlss/access-update-scripts/blob/master/autupdate.sh
