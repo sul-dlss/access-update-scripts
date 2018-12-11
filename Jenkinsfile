@@ -11,6 +11,8 @@ pipeline {
 
   stages {
     stage('Test') {
+    
+      when { expression { env.BRANCH_NAME == 'master' } }
       steps {
         checkout scm
 
@@ -31,3 +33,4 @@ pipeline {
     }
   }
 }
+
