@@ -10,9 +10,7 @@ Jenkins run the script and PRs are created via the `sul-devops-team` account. If
 - A PR in `access-update-scripts` is merged into master
 
 ### Phase 2: Reporting
-A gem version report can be found in the Jenkins console and should be copied over to the Slack channel (automation pending).
-
-The githubLinks.js script is used to populate the team tracking spreadsheet with links to the PRs.
+A gem version report will be sent to the #dlss-access-team slack channel.  The output of the messages can be used to populate the team tracking spreadsheet with links to the PRs.
 
 ### Phase 3: Team Review
 Devs tag team on reviewing and merging PRs. Manual remediation of PRs may be necessary.
