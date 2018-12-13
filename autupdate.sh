@@ -1,10 +1,14 @@
 #!/bin/bash
 
-WORKSPACE=${WORKSPACE:-$TMPDIR}
+SCRIPT_PATH=$(cd "$(dirname "$0")" ; pwd -P)
+RUBY_REPOS_FILE="${WORKSPACE:-$SCRIPT_PATH}/repos/ruby"
+JS_REPOS_FILE="${WORKSPACE:-$SCRIPT_PATH}/repos/javascript"
 
-cd $WORKSPACE
-mkdir -p $WORKSPACE/.autoupdate
-cd $WORKSPACE/.autoupdate
+CLONE_LOCATION=${WORKSPACE:-$TMPDIR}
+
+cd $CLONE_LOCATION
+mkdir -p $CLONE_LOCATION/.autoupdate
+cd $CLONE_LOCATION/.autoupdate
 
 mkdir gem_report
 mkdir npm_report
@@ -13,15 +17,15 @@ GEM_SUCCESS_REPORTS_ARRAY=("/dev/null")
 NPM_SUCCESS_REPORTS_ARRAY=("/dev/null")
 
 # Ruby / Rails applications
-for i in purl stacks sul-embed purl-fetcher content_search course_reserves earthworks exhibits library_hours_rails sul-bento-app sul-directory sul-requests SearchWorks revs dlme arclight-demo vatican_exhibits revs-indexer-service bassi_veratti editstore-updater mods_display_app mirador_sul frda relevancy_dashboard stanford-arclight searchworks_traject_indexer; do
-  echo $i
-  cd $WORKSPACE/.autoupdate
-  git clone git@github.com:sul-dlss/$i
-  cd $i
+while IFS='' read -r repo || [[ -n "$repo" ]]; do
+  echo $repo
+  cd $CLONE_LOCATION/.autoupdate
+  git clone git@github.com:sul-dlss/$repo
+  cd $repo
   git fetch origin
   git checkout -B update-dependencies
   git reset --hard  origin/master
-  bundle update > ../gem_report/$i.txt &&
+  bundle update > ../gem_report/$repo.txt &&
     git add Gemfile.lock &&
     git commit -m "Update dependencies" &&
     git push origin update-dependencies &&
@@ -30,26 +34,26 @@ for i in purl stacks sul-embed purl-fetcher content_search course_reserves earth
   retVal=$?
 
   if [ $retVal -ne 0 ]; then
-    echo "ERROR UPDATING ${i}"
-    cat ../gem_report/$i.txt
+    echo "ERROR UPDATING ${repo}"
+    cat ../gem_report/$repo.txt
   else
-    GEM_SUCCESS_REPORTS_ARRAY+=("../gem_report/$i.txt")
+    GEM_SUCCESS_REPORTS_ARRAY+=("../gem_report/$repo.txt")
   fi
 
   echo " ===== "
-done
+done < $RUBY_REPOS_FILE
 
 # JavaScript applications
-for i in searchworks-status; do
-  echo $i
-  cd $WORKSPACE/.autoupdate
-  git clone git@github.com:sul-dlss/$i
-  cd $i
+while IFS='' read -r repo || [[ -n "$repo" ]]; do
+  echo $repo
+  cd $CLONE_LOCATION/.autoupdate
+  git clone git@github.com:sul-dlss/$repo
+  cd $repo
   git fetch origin
   git checkout -B update-dependencies
   git reset --hard  origin/master
 
-  npm audit fix > ../npm_report/$i.txt &&
+  npm audit fix > ../npm_report/$repo.txt &&
   git add package-lock.json package.json &&
   git commit -m "Update dependencies" &&
   git push origin update-dependencies &&
@@ -58,12 +62,12 @@ for i in searchworks-status; do
   retVal=$?
 
   if [ $retVal -ne 0 ]; then
-    echo "ERROR UPDATING ${i}"
-    cat ../npm_report/$i.txt
+    echo "ERROR UPDATING ${repo}"
+    cat ../npm_report/$repo.txt
   else
-    NPM_SUCCESS_REPORTS_ARRAY+=("../npm_report/$i.txt")
+    NPM_SUCCESS_REPORTS_ARRAY+=("../npm_report/$repo.txt")
   fi
-done
+done < $JS_REPOS_FILE
 
 
 echo "============"
