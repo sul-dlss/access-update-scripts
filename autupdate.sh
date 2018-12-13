@@ -4,11 +4,11 @@ SCRIPT_PATH=$(cd "$(dirname "$0")" ; pwd -P)
 RUBY_REPOS_FILE="${WORKSPACE:-$SCRIPT_PATH}/repos/ruby"
 JS_REPOS_FILE="${WORKSPACE:-$SCRIPT_PATH}/repos/javascript"
 
-WORKSPACE=${WORKSPACE:-$TMPDIR}
+CLONE_LOCATION=${WORKSPACE:-$TMPDIR}
 
-cd $WORKSPACE
-mkdir -p $WORKSPACE/.autoupdate
-cd $WORKSPACE/.autoupdate
+cd $CLONE_LOCATION
+mkdir -p $CLONE_LOCATION/.autoupdate
+cd $CLONE_LOCATION/.autoupdate
 
 mkdir gem_report
 mkdir npm_report
@@ -19,7 +19,7 @@ NPM_SUCCESS_REPORTS_ARRAY=("/dev/null")
 # Ruby / Rails applications
 while IFS='' read -r repo || [[ -n "$repo" ]]; do
   echo $repo
-  cd $WORKSPACE/.autoupdate
+  cd $CLONE_LOCATION/.autoupdate
   git clone git@github.com:sul-dlss/$repo
   cd $repo
   git fetch origin
@@ -46,7 +46,7 @@ done < $RUBY_REPOS_FILE
 # JavaScript applications
 while IFS='' read -r repo || [[ -n "$repo" ]]; do
   echo $repo
-  cd $WORKSPACE/.autoupdate
+  cd $CLONE_LOCATION/.autoupdate
   git clone git@github.com:sul-dlss/$repo
   cd $repo
   git fetch origin
