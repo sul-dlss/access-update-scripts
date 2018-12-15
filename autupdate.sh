@@ -25,7 +25,7 @@ while IFS='' read -r repo || [[ -n "$repo" ]]; do
   git fetch origin
   git checkout -B update-dependencies
   git reset --hard  origin/master
-  bundle update > ../gem_report/$repo.txt &&
+  bundle update > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt &&
     git add Gemfile.lock &&
     git commit -m "Update dependencies" &&
     git push origin update-dependencies &&
@@ -35,9 +35,9 @@ while IFS='' read -r repo || [[ -n "$repo" ]]; do
 
   if [ $retVal -ne 0 ]; then
     echo "ERROR UPDATING ${repo}"
-    cat ../gem_report/$repo.txt
+    cat $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
   else
-    GEM_SUCCESS_REPORTS_ARRAY+=("../gem_report/$repo.txt")
+    GEM_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/gem_report/$repo.txt")
   fi
 
   echo " ===== "
@@ -53,7 +53,7 @@ while IFS='' read -r repo || [[ -n "$repo" ]]; do
   git checkout -B update-dependencies
   git reset --hard  origin/master
 
-  npm audit fix > ../npm_report/$repo.txt &&
+  npm audit fix > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
   git add package-lock.json package.json &&
   git commit -m "Update dependencies" &&
   git push origin update-dependencies &&
@@ -63,15 +63,12 @@ while IFS='' read -r repo || [[ -n "$repo" ]]; do
 
   if [ $retVal -ne 0 ]; then
     echo "ERROR UPDATING ${repo}"
-    cat ../npm_report/$repo.txt
+    cat $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt
   else
-    NPM_SUCCESS_REPORTS_ARRAY+=("../npm_report/$repo.txt")
+    NPM_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/npm_report/$repo.txt")
   fi
 done < $JS_REPOS_FILE
 
-
-echo "============"
-echo "| Gems updated |"
-echo "============"
-cat ${GEM_SUCCESS_REPORTS_ARRAY[*]} | grep "(was " | cut -f 2-5 -d " " | sort | uniq
-echo "============"
+cd $SCRIPT_PATH
+./slack_bot.rb "Dependency Updates Shipped!"
+./slack_bot.rb "`cat ${GEM_SUCCESS_REPORTS_ARRAY[*]} | grep "(was " | cut -f 2-5 -d " " | sort | uniq`"
