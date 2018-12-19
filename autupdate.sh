@@ -1,8 +1,8 @@
 #!/bin/bash
 
 SCRIPT_PATH=$(cd "$(dirname "$0")" ; pwd -P)
-RUBY_REPOS_FILE="${WORKSPACE:-$SCRIPT_PATH}/repos/ruby"
-JS_REPOS_FILE="${WORKSPACE:-$SCRIPT_PATH}/repos/javascript"
+RUBY_REPOS_FILE="${REPOS_PATH:-$SCRIPT_PATH}/ruby"
+JS_REPOS_FILE="${REPOS_PATH:-$SCRIPT_PATH}/javascript"
 
 CLONE_LOCATION=${WORKSPACE:-$TMPDIR}
 
