@@ -14,7 +14,7 @@ class SlackBot
   private
 
   def default_channel
-    '#dlss-access-team'
+    ENV['SLACK_DEFAULT_CHANNEL'] || '#dlss-access-team'
   end
 
   def client

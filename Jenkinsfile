@@ -12,8 +12,8 @@ pipeline {
   }
 
   stages {
-    stage('Test') {
-    
+    stage('Access') {
+
       when { expression { env.BRANCH_NAME == 'master' } }
       steps {
         checkout scm
@@ -24,6 +24,7 @@ pipeline {
 
           export PATH=/ci/home/bin:$PATH
           export HUB_CONFIG=/ci/home/config/hub
+          export REPOS_PATH=$WORKSPACE/access
 
           # Load RVM
           rvm use 2.5.3@access_dependency_updates --create
@@ -38,6 +39,32 @@ pipeline {
         }
       }
     }
+
+    stage('Infrastructure') {
+
+      when { expression { env.BRANCH_NAME == 'master' } }
+      steps {
+        checkout scm
+
+        sshagent (['sul-devops-team']){
+          sh '''#!/bin/bash -l
+          export PATH=/ci/home/bin:$PATH
+          export HUB_CONFIG=/ci/home/config/hub
+          export SLACK_DEFAULT_CHANNEL='#dlss-infrastructure'
+          export REPOS_PATH=$WORKSPACE/infrastructure
+
+          # Load RVM
+          rvm use 2.5.3@infrastructure_dependency_updates --create
+          gem install bundler
+          bundle install
+
+          bundle config --global gems.contribsys.com $SIDEKIQ_PRO_SECRET
+          ./autupdate.sh
+
+          bundle exec ./git_hub_links.rb
+          '''
+        }
+      }
+    }
   }
 }
-
