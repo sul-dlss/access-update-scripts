@@ -20,6 +20,8 @@ pipeline {
 
         sshagent (['sul-devops-team']){
           sh '''#!/bin/bash -l
+          source /opt/rh/devtoolset-6/enable
+
           export PATH=/ci/home/bin:$PATH
           export HUB_CONFIG=/ci/home/config/hub
 
