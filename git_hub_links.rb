@@ -40,11 +40,11 @@ class GitHubLinks
   end
 
   def js_repos_file
-    File.open('./repos/javascript')
+    File.open("#{ENV['REPOS_PATH']}/javascript")
   end
 
   def ruby_repos_file
-    File.open('./repos/ruby')
+    File.open("#{ENV['REPOS_PATH']}/ruby")
   end
 
   ##
