@@ -53,7 +53,10 @@ while IFS='' read -r repo || [[ -n "$repo" ]]; do
   git checkout -B update-dependencies
   git reset --hard  origin/master
 
-  npm audit fix > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
+  # We should ultimately run both npm update and npm audit fix to
+  # update dependencies as well as address any vulnerabilities.
+  # Currently our Jenkins server does not have a version of npm that has the audit functionality.
+  npm update > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
   git add package-lock.json package.json &&
   git commit -m "Update dependencies" &&
   git push origin update-dependencies &&
