@@ -13,11 +13,11 @@ GEM
       faraday (>= 0.7.4, < 1.0)
     gli (2.18.0)
     hashie (3.6.0)
-    i18n (1.5.3)
+    i18n (1.6.0)
       concurrent-ruby (~> 1.0)
     minitest (5.11.3)
     multipart-post (2.0.0)
-    slack-ruby-client (0.13.1)
+    slack-ruby-client (0.14.1)
       activesupport
       faraday (>= 0.9)
       faraday_middleware
