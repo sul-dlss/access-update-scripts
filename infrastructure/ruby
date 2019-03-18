@@ -1,6 +1,7 @@
 argo
 assembly
 common-accessioning
+dlme
 dor-scripts
 dor-services-app
 dor-utils
@@ -17,6 +18,8 @@ modsulator-app-rails
 preservation_catalog
 preservation_robots
 pre-assembly
+revs
+revs-indexer-service
 rialto-webapp
 robot-master
 sul_pub

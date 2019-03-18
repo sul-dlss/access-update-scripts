@@ -3,9 +3,7 @@ arclight-demo
 bassi_veratti
 content_search
 course_reserves
-dlme
 earthworks
-editstore-updater
 exhibits
 frda
 library_hours_rails
@@ -14,8 +12,6 @@ mods_display_app
 purl
 purl-fetcher
 relevancy_dashboard
-revs
-revs-indexer-service
 SearchWorks
 searchworks_traject_indexer
 stacks
