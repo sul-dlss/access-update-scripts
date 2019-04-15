@@ -1,5 +1,4 @@
 argo
-assembly
 common-accessioning
 dlme
 dor-services-app
@@ -9,7 +8,6 @@ dor-fetcher-service
 editstore-updater
 etd-robots
 gis-robot-suite
-goobi-robot
 hydra_etd
 hydrus
 item-release
