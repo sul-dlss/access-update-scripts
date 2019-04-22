@@ -57,7 +57,7 @@ pipeline {
           # Load RVM
           rvm use 2.5.3@infrastructure_dependency_updates --create
           gem install bundler
-          bundle install
+          bundle install --without production staging
 
           bundle config --global gems.contribsys.com $SIDEKIQ_PRO_SECRET
           ./autupdate.sh
