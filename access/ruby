@@ -12,6 +12,8 @@ mods_display_app
 purl
 purl-fetcher
 relevancy_dashboard
+revs
+revs-indexer-service
 SearchWorks
 searchworks_traject_indexer
 stacks
