@@ -67,5 +67,33 @@ pipeline {
         }
       }
     }
+
+    stage('Libsys') {
+
+      when { expression { env.BRANCH_NAME == 'master' } }
+      steps {
+        checkout scm
+
+        sshagent (['sul-devops-team']){
+          sh '''#!/bin/bash -l
+          source /opt/rh/devtoolset-6/enable
+          export PATH=/ci/home/bin:$PATH
+          export HUB_CONFIG=/ci/home/config/hub
+          export SLACK_DEFAULT_CHANNEL='#libsys'
+          export REPOS_PATH=$WORKSPACE/libsys
+
+          # Load RVM
+          rvm use 2.5.3@libsys_dependency_updates --create
+          gem install bundler
+          bundle install --without production staging
+
+          bundle config --global gems.contribsys.com $SIDEKIQ_PRO_SECRET
+          ./autupdate.sh
+
+          bundle exec ./git_hub_links.rb
+          '''
+        }
+      }
+    }
   }
 }
