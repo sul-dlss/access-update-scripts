@@ -14,7 +14,13 @@ pipeline {
   stages {
     stage('Access') {
 
-      when { expression { env.BRANCH_NAME == 'master' } }
+      when {
+        allOf {
+          branch 'master';
+          not { triggeredBy 'SCMTrigger' }
+        }
+      }
+
       steps {
         checkout scm
 
@@ -42,7 +48,13 @@ pipeline {
 
     stage('Infrastructure') {
 
-      when { expression { env.BRANCH_NAME == 'master' } }
+      when {
+        allOf {
+          branch 'master';
+          not { triggeredBy 'SCMTrigger' }
+        }
+      }
+
       steps {
         checkout scm
 
@@ -70,7 +82,13 @@ pipeline {
 
     stage('Libsys') {
 
-      when { expression { env.BRANCH_NAME == 'master' } }
+      when {
+        allOf {
+          branch 'master';
+          not { triggeredBy 'SCMTrigger' }
+        }
+      }
+
       steps {
         checkout scm
 
