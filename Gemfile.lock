@@ -17,7 +17,7 @@ GEM
       concurrent-ruby (~> 1.0)
     minitest (5.11.3)
     multipart-post (2.1.1)
-    slack-ruby-client (0.14.2)
+    slack-ruby-client (0.14.4)
       activesupport
       faraday (>= 0.9)
       faraday_middleware
