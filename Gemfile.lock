@@ -12,7 +12,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.13.1)
       faraday (>= 0.7.4, < 1.0)
-    gli (2.18.2)
+    gli (2.19.0)
     hashie (3.6.0)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
@@ -31,7 +31,7 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
-    zeitwerk (2.1.9)
+    zeitwerk (2.1.10)
 
 PLATFORMS
   ruby
