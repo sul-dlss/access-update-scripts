@@ -13,6 +13,7 @@ preservation_robots
 pre-assembly
 revs
 revs-indexer-service
+rialto-etl
 rialto-webapp
 robot-console
 sul_pub
