@@ -1,6 +1,7 @@
 argo
 common-accessioning
 dlme
+dlme-transform
 dor-services-app
 dor_indexing_app
 dor-fetcher-service
