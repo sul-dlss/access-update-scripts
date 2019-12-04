@@ -1,7 +1,11 @@
+// NOTE: DEPRECATED. We no longer use this script. Instead we pull this list
+//       from Slack notifications, which prevents us from having to maintain the
+//       list of repos in multiple places
+
 // Paste this script in your browser console
 
 // Enter GitHub search params @ https://github.com/pulls
-// is:pr org:sul-dlss head:update-dependencies is:open 
+// is:pr org:sul-dlss head:update-dependencies is:open
 // example: https://github.com/pulls?utf8=✓&q=is%3Apr+org%3Asul-dlss+head%3Aupdate-dependencies+is%3Aopen+
 
 // Repo order used in autupdate.sh and status table

@@ -17,14 +17,14 @@ GEM_SUCCESS_REPORTS_ARRAY=("/dev/null")
 NPM_SUCCESS_REPORTS_ARRAY=("/dev/null")
 
 # Ruby / Rails applications
-while IFS='' read -r repo || [[ -n "$repo" ]]; do
-  echo $repo
+while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
+  echo "$org/$repo"
   cd $CLONE_LOCATION/.autoupdate
-  git clone git@github.com:sul-dlss/$repo
+  git clone git@github.com:$org/$repo
   cd $repo
   git fetch origin
   git checkout -B update-dependencies
-  git reset --hard  origin/master
+  git reset --hard origin/master
   bundle update > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt &&
     git add Gemfile.lock &&
     git commit -m "Update dependencies" &&
@@ -44,14 +44,14 @@ while IFS='' read -r repo || [[ -n "$repo" ]]; do
 done < $RUBY_REPOS_FILE
 
 # JavaScript applications
-while IFS='' read -r repo || [[ -n "$repo" ]]; do
-  echo $repo
+while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
+  echo "$org/$repo"
   cd $CLONE_LOCATION/.autoupdate
-  git clone git@github.com:sul-dlss/$repo
+  git clone git@github.com:$org/$repo
   cd $repo
   git fetch origin
   git checkout -B update-dependencies
-  git reset --hard  origin/master
+  git reset --hard origin/master
 
   npm update > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
   npm audit fix > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&

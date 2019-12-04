@@ -2,6 +2,7 @@
 
 require 'json'
 require './slack_bot'
+
 ##
 # This script uses the GitHub REST API to get find dependency update PRs for the configured
 # reqositories.
@@ -51,13 +52,13 @@ class GitHubLinks
   # Responsible for fetching the dependency update PR for a given proejct
   #
   class PullRequest
-    attr_reader :repo
+    attr_reader :org, :repo
     def initialize(repo)
-      @repo = repo
+      @org, @repo = repo.split('/')
     end
 
     def to_s
-      "#{repo}\t#{files_url}"
+      "#{org}/#{repo}\t#{files_url}"
     end
 
     def files_url
@@ -92,7 +93,7 @@ class GitHubLinks
 
     def pull_request_api_url
       addl_params = "\\&access_token\\=#{access_token}" if access_token
-      "https://api.github.com/repos/sul-dlss/#{repo}/pulls\\?head\\=sul-dlss:update-dependencies#{addl_params}"
+      "https://api.github.com/repos/#{org}/#{repo}/pulls\\?head\\=#{org}:update-dependencies#{addl_params}"
     end
 
     def access_token
@@ -100,7 +101,7 @@ class GitHubLinks
     end
 
     def repo_pr_search_url
-      "https://github.com/sul-dlss/#{repo}/pulls?q=is:pr%20update-dependencies%20is:open"
+      "https://github.com/#{org}/#{repo}/pulls?q=is:pr%20update-dependencies%20is:open"
     end
   end
 end
