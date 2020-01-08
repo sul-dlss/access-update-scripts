@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# NOTE: DEPRECATED. We do not use this in any automated way.
+
 ###
 # How to use this script
 # From the command line run REPOS_PATH=./access ./outdated_report.rb
