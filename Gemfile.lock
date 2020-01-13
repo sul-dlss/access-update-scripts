@@ -8,17 +8,17 @@ GEM
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2)
     concurrent-ruby (1.1.5)
-    faraday (0.17.1)
+    faraday (0.17.3)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.13.1)
       faraday (>= 0.7.4, < 1.0)
     gli (2.19.0)
     hashie (4.0.0)
-    i18n (1.7.0)
+    i18n (1.8.2)
       concurrent-ruby (~> 1.0)
-    minitest (5.13.0)
+    minitest (5.14.0)
     multipart-post (2.1.1)
-    slack-ruby-client (0.14.4)
+    slack-ruby-client (0.14.5)
       activesupport
       faraday (>= 0.9)
       faraday_middleware
@@ -26,7 +26,7 @@ GEM
       hashie
       websocket-driver
     thread_safe (0.3.6)
-    tzinfo (1.2.5)
+    tzinfo (1.2.6)
       thread_safe (~> 0.1)
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
