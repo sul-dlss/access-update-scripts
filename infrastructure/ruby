@@ -14,10 +14,10 @@ sul-dlss/modsulator-app-rails
 sul-dlss/pre-assembly
 sul-dlss/preservation_catalog
 sul-dlss/preservation_robots
-sul-dlss/repository-api
 sul-dlss/rialto-etl
 sul-dlss/rialto-webapp
 sul-dlss/robot-console
+sul-dlss/sdr-api
 sul-dlss/sul_pub
 sul-dlss/suri_rails
 sul-dlss/was_robot_suite
