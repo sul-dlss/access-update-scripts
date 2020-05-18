@@ -16,7 +16,7 @@ GEM
     hashie (4.1.0)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
-    minitest (5.14.0)
+    minitest (5.14.1)
     multipart-post (2.1.1)
     slack-ruby-client (0.14.6)
       activesupport
