@@ -48,7 +48,7 @@ if pr_list.empty?
 end
 
 unless pr_list.all? { |pr| pr[:status] == 'success' }
-  puts "These PRs are not passing: "
+  puts '*No* PRs were merged because these PRs are not passing: '
   pr_list.filter { |pr| pr[:status] != 'success' }.each do |pr|
     puts "#{pr[:status]} - #{pr[:url]}"
   end
