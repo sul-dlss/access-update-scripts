@@ -8,24 +8,34 @@ def ruby_repos_file
   File.open("#{ENV['REPOS_PATH']}/ruby")
 end
 
+def javascript_repos_file
+  File.open("#{ENV['REPOS_PATH']}/javascript")
+end
+
 def repos
-  [ruby_repos_file].map(&:to_a).flatten.map(&:strip).sort
+  [ruby_repos_file].map(&:to_a).flatten.map(&:strip).sort +
+    [javascript_repos_file].map(&:to_a).flatten.map(&:strip).sort
 end
 
 # @return [Array<Hash>] the update PR
 def find_prs(client, repos)
   repo_content = repos.map do |repo|
-    pr, * = client.pull_requests(repo, head: "sul-dlss:#{BRANCH_NAME}")
+    pr, * = client.pull_requests(repo, head: "#{repo.split('/').first}:#{BRANCH_NAME}")
 
     unless pr
       warn "no #{BRANCH_NAME} pr found for #{repo}"
       next
     end
+    puts "#{BRANCH_NAME} pr found for #{repo}"
     statuses = client.combined_status(repo, pr.head.sha)
 
 
-    branch_protection = client.branch_protection(repo, pr.base.ref, accept: Octokit::Preview::PREVIEW_TYPES[:branch_protection])
-    warn "No branch branch_protection is set up for #{repo}" unless branch_protection
+    begin
+      branch_protection = client.branch_protection(repo, pr.base.ref, accept: Octokit::Preview::PREVIEW_TYPES[:branch_protection])
+      warn "No branch branch_protection is set up for #{repo}" unless branch_protection
+    rescue Octokit::NotFound => e
+      warn "404 checking branch protection for #{repo}? #{e}"
+    end
 
     # GitHub API marks PRs with 0 statuses as "pending", we cast that to success
     status = statuses.total_count == 0 ? 'success' : statuses.state
@@ -56,7 +66,7 @@ unless pr_list.all? { |pr| pr[:status] == 'success' }
 end
 
 
-puts "All of the update PRs are successful and ready to merge."
+puts "All #{pr_list.size} of the update PRs are successful and ready to merge."
 require 'highline/import'
 confirm = ask("Do it? [Y/N] ") { |yn| yn.limit = 1, yn.validate = /[yn]/i }
 exit unless confirm.downcase == 'y'
