@@ -1,8 +1,7 @@
 #!/bin/bash
 
 SCRIPT_PATH=$(cd "$(dirname "$0")" ; pwd -P)
-RUBY_REPOS_FILE="${REPOS_PATH:-$SCRIPT_PATH}/ruby"
-JS_REPOS_FILE="${REPOS_PATH:-$SCRIPT_PATH}/javascript"
+REPOS_FILE="${REPOS_PATH:-$SCRIPT_PATH}/projects"
 
 CLONE_LOCATION=${WORKSPACE:-$TMPDIR}
 
@@ -18,6 +17,8 @@ NPM_SUCCESS_REPORTS_ARRAY=("/dev/null")
 
 # Ruby / Rails applications
 while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
+  retVal=-1
+
   echo "$org/$repo"
   cd $CLONE_LOCATION/.autoupdate
   git clone git@github.com:$org/$repo
@@ -25,50 +26,73 @@ while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
   git fetch origin
   git checkout -B update-dependencies
   git reset --hard origin/master
-  bundle update > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt &&
-    git add Gemfile.lock &&
-    git commit -m "Update dependencies" &&
+
+  if [[ -f '.autoupdate/preupdate' ]]; then
+    .autoupdate/preupdate
+    if [ $? -ne 0 ]; then
+      continue
+    fi
+  fi
+
+  if [[ -f '.autoupdate/update' ]]; then
+    .autoupdate/update
+  else
+    if [[ -f 'Gemfile.lock' ]]; then
+      bundle update > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt &&
+        git add Gemfile.lock &&
+        git commit -m "Update dependencies" &&
+
+      retVal=$?
+
+      if [ $retVal -ne 0 ]; then
+        echo "ERROR UPDATING ${repo}"
+        cat $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
+      fi
+    fi
+
+    if [[ -f 'package-lock.json' ]]; then
+      npm update > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
+      npm audit fix > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
+      git add package-lock.json package.json &&
+      git commit -m "Update dependencies"
+
+      retVal=$?
+
+      if [ $retVal -ne 0 ]; then
+        echo "ERROR UPDATING ${repo}"
+        cat $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt
+      fi
+    fi
+  fi
+
+  if [[ -f '.autoupdate/postupdate' ]]; then
+    .autoupdate/postupdate
+    if [ $? -ne 0 ]; then
+      continue
+    fi
+  fi
+
+  if [ $retVal -ne 0 ]; then
     git push origin update-dependencies &&
     hub pull-request -f -m "Update dependencies"
 
-  retVal=$?
+    retVal=$?
+    if [ $retVal -eq 0 ]; then
+      if [[ -f 'Gemfile.lock' ]]; then
+        GEM_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/gem_report/$repo.txt")
+      fi
 
-  if [ $retVal -ne 0 ]; then
-    echo "ERROR UPDATING ${repo}"
-    cat $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
-  else
-    GEM_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/gem_report/$repo.txt")
+      if [[ -f 'package-lock.json' ]]; then
+        NPM_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/npm_report/$repo.txt")
+        end
+      fi
+    else
+      echo "ERROR PUSHING ${repo}"
+    fi
   fi
 
   echo " ===== "
-done < $RUBY_REPOS_FILE
-
-# JavaScript applications
-while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
-  echo "$org/$repo"
-  cd $CLONE_LOCATION/.autoupdate
-  git clone git@github.com:$org/$repo
-  cd $repo
-  git fetch origin
-  git checkout -B update-dependencies
-  git reset --hard origin/master
-
-  npm update > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
-  npm audit fix > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
-  git add package-lock.json package.json &&
-  git commit -m "Update dependencies" &&
-  git push origin update-dependencies &&
-  hub pull-request -f -m "Update dependencies"
-
-  retVal=$?
-
-  if [ $retVal -ne 0 ]; then
-    echo "ERROR UPDATING ${repo}"
-    cat $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt
-  else
-    NPM_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/npm_report/$repo.txt")
-  fi
-done < $JS_REPOS_FILE
+done < $REPOS_FILE
 
 cd $SCRIPT_PATH
 ./slack_bot.rb "Dependency Updates Shipped!"
