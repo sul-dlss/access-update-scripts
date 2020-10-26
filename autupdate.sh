@@ -27,7 +27,8 @@ while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
   cd $repo
   git fetch origin
   git checkout -B update-dependencies
-  git reset --hard origin/master
+  # This allows our default branches to vary across projects
+  git reset --hard $(git symbolic-ref refs/remotes/origin/HEAD)
 
   if [[ -f '.autoupdate/preupdate' ]]; then
     .autoupdate/preupdate
