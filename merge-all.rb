@@ -9,7 +9,7 @@ def repos_file
 end
 
 def repos
-  [repos_file].map(&:to_a).flatten.map(&:strip).sort
+  repos_file.readlines(chomp: true)
 end
 
 # @return [Array<Hash>] the update PR
