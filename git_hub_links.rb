@@ -37,7 +37,7 @@ class GitHubLinks
   end
 
   def repos
-    repos_file.map(&:to_a).flatten.map(&:strip).sort
+    repos_file.to_a.map(&:strip).sort
   end
 
   def repos_file
