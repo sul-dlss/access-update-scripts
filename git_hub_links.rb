@@ -5,7 +5,7 @@ require './slack_bot'
 
 ##
 # This script uses the GitHub REST API to get find dependency update PRs for the configured
-# reqositories.
+# repositories.
 #
 # This script can simply be run as "./git_hub_links.rb" or "ruby git_hub_links.rb"
 #
@@ -37,15 +37,11 @@ class GitHubLinks
   end
 
   def repos
-    [js_repos_file, ruby_repos_file].map(&:to_a).flatten.map(&:strip).sort
+    repos_file.map(&:to_a).flatten.map(&:strip).sort
   end
 
-  def js_repos_file
-    File.open("#{ENV['REPOS_PATH']}/javascript")
-  end
-
-  def ruby_repos_file
-    File.open("#{ENV['REPOS_PATH']}/ruby")
+  def repos_file
+    File.open("#{ENV['REPOS_PATH']}/projects")
   end
 
   ##
