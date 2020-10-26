@@ -11,9 +11,11 @@ cd $CLONE_LOCATION/.autoupdate
 
 mkdir gem_report
 mkdir npm_report
+mkdir yarn_report
 
 GEM_SUCCESS_REPORTS_ARRAY=("/dev/null")
 NPM_SUCCESS_REPORTS_ARRAY=("/dev/null")
+YARN_SUCCESS_REPORTS_ARRAY=("/dev/null")
 
 # Ruby / Rails applications
 while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
@@ -40,13 +42,26 @@ while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
     if [[ -f 'Gemfile.lock' ]]; then
       bundle update > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt &&
         git add Gemfile.lock &&
-        git commit -m "Update dependencies" &&
+        git commit -m "Update Ruby dependencies" &&
 
       retVal=$?
 
       if [ $retVal -ne 0 ]; then
-        echo "ERROR UPDATING ${repo}"
+        echo "ERROR UPDATING RUBY ${repo}"
         cat $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
+      fi
+    fi
+
+    if [[ -f 'yarn.lock' ]]; then
+      yarn upgrade > $CLONE_LOCATION/.autoupdate/yarn_report/$repo.txt &&
+        git add yarn.lock &&
+        git commit -m "Update Yarn dependencies" &&
+
+      retVal=$?
+
+      if [ $retVal -ne 0 ]; then
+        echo "ERROR UPDATING YARN ${repo}"
+        cat $CLONE_LOCATION/.autoupdate/yarn_report/$repo.txt
       fi
     fi
 
@@ -54,12 +69,12 @@ while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
       npm update > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
       npm audit fix > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
       git add package-lock.json package.json &&
-      git commit -m "Update dependencies"
+      git commit -m "Update NPM dependencies"
 
       retVal=$?
 
       if [ $retVal -ne 0 ]; then
-        echo "ERROR UPDATING ${repo}"
+        echo "ERROR UPDATING NPM ${repo}"
         cat $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt
       fi
     fi
@@ -80,6 +95,10 @@ while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
     if [ $retVal -eq 0 ]; then
       if [[ -f 'Gemfile.lock' ]]; then
         GEM_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/gem_report/$repo.txt")
+      fi
+
+      if [[ -f 'yarn.lock' ]]; then
+        YARN_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/yarn_report/$repo.txt")
       fi
 
       if [[ -f 'package-lock.json' ]]; then
