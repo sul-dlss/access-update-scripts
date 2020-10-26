@@ -4,17 +4,12 @@
 # "REPOS_PATH=infrastructure GH_ACCESS_TOKEN=abc123 ./merge-all.rb"
 BRANCH_NAME = 'update-dependencies'
 
-def ruby_repos_file
-  File.open("#{ENV['REPOS_PATH']}/ruby")
-end
-
-def javascript_repos_file
-  File.open("#{ENV['REPOS_PATH']}/javascript")
+def repos_file
+  File.open("#{ENV['REPOS_PATH']}/projects")
 end
 
 def repos
-  [ruby_repos_file].map(&:to_a).flatten.map(&:strip).sort +
-    [javascript_repos_file].map(&:to_a).flatten.map(&:strip).sort
+  [repos_file].map(&:to_a).flatten.map(&:strip).sort
 end
 
 # @return [Array<Hash>] the update PR
