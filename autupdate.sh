@@ -72,7 +72,7 @@ while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
     fi
   fi
 
-  if [ $retVal -ne 0 ]; then
+  if [ $retVal -eq 0 ]; then
     git push origin update-dependencies &&
     hub pull-request -f -m "Update dependencies"
 
