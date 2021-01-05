@@ -14,7 +14,7 @@ end
 
 # @return [Array<Hash>] the update PR
 def find_prs(client, repos)
-  repo_content = repos.map do |repo|
+  repos.map do |repo|
     pr, * = client.pull_requests(repo, head: "#{repo.split('/').first}:#{BRANCH_NAME}")
 
     unless pr
@@ -23,7 +23,7 @@ def find_prs(client, repos)
     end
     puts "#{BRANCH_NAME} pr found for #{repo}"
     statuses = client.combined_status(repo, pr.head.sha)
-
+    checks = client.check_runs_for_ref(repo, pr.head.sha, accept: Octokit::Preview::PREVIEW_TYPES[:checks])
 
     begin
       branch_protection = client.branch_protection(repo, pr.base.ref, accept: Octokit::Preview::PREVIEW_TYPES[:branch_protection])
@@ -32,10 +32,16 @@ def find_prs(client, repos)
       warn "404 checking branch protection for #{repo}? #{e}"
     end
 
-    # GitHub API marks PRs with 0 statuses as "pending", we cast that to success
-    status = statuses.total_count == 0 ? 'success' : statuses.state
-    { repo: repo, number: pr.number, url: pr.html_url, status: status }
+    { repo: repo, number: pr.number, url: pr.html_url, status: status_from(statuses, checks) }
   end.compact
+end
+
+def status_from(statuses, checks)
+  # GitHub API marks PRs with 0 statuses as "pending", we cast that to success
+  return 'success' if (statuses.total_count.zero? && checks.total_count.zero?) ||
+                      (statuses.state == 'success' && checks.check_runs.map(&:conclusion).all? { |status| status == 'success' })
+
+  'failure'
 end
 
 def access_token
@@ -45,7 +51,6 @@ end
 require 'octokit'
 client = Octokit::Client.new(access_token: access_token)
 pr_list = find_prs(client, repos)
-
 
 if pr_list.empty?
   puts "No PRs were found"
