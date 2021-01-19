@@ -38,8 +38,8 @@ end
 
 def status_from(statuses, checks)
   # GitHub API marks PRs with 0 statuses as "pending", we cast that to success
-  return 'success' if (statuses.total_count.zero? && checks.total_count.zero?) ||
-                      (statuses.state == 'success' && checks.check_runs.map(&:conclusion).all? { |status| status == 'success' })
+  return 'success' if (statuses.state == 'success' || statuses.total_count.zero?) &&
+                      checks.check_runs.map(&:conclusion).all? { |status| status == 'success' }
 
   'failure'
 end
