@@ -22,7 +22,7 @@ GEM
     sawyer (0.8.2)
       addressable (>= 2.3.5)
       faraday (> 0.8, < 2.0)
-    slack-ruby-client (0.16.0)
+    slack-ruby-client (0.17.0)
       faraday (>= 1.0)
       faraday_middleware
       gli
@@ -42,4 +42,4 @@ DEPENDENCIES
   slack-ruby-client
 
 BUNDLED WITH
-   2.2.11
+   2.2.13
