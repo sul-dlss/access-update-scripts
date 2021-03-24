@@ -104,7 +104,6 @@ while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
 
       if [[ -f 'package-lock.json' ]]; then
         NPM_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/npm_report/$repo.txt")
-        end
       fi
     else
       echo "ERROR PUSHING ${repo}"
