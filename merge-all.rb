@@ -9,7 +9,7 @@ def repos_file
 end
 
 def repos
-  repos_file.readlines(chomp: true)
+  repos_file.readlines(chomp: true).reject { |line| line.start_with?('#') }
 end
 
 # @return [Array<Hash>] the update PR
