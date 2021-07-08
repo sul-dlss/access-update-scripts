@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Usage:
+#   GITHUB_TOKEN=my-private-token REPOS_PATH=/home/access-update-scripts/infrastructure WORKSPACE=/workspace ./autupdate.sh
+
 SCRIPT_PATH=$(cd "$(dirname "$0")" ; pwd -P)
 REPOS_FILE="${REPOS_PATH:-$SCRIPT_PATH}/projects"
 
