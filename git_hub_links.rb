@@ -26,7 +26,9 @@ class GitHubLinks
 
   def slack_bot_content
     repo_content = repos.map do |repo|
-      PullRequest.new(repo)
+      pr, * = client.pull_requests(repo, head: "#{repo.split('/').first}:update-dependencies")
+
+      "#{repo}\t#{pr && "#{pr[:html_url]}/files"}"
     end.map(&:to_s).join("\n")
 
     [
@@ -48,61 +50,12 @@ class GitHubLinks
     File.open("#{ENV['REPOS_PATH']}/ruby")
   end
 
-  ##
-  # Responsible for fetching the dependency update PR for a given proejct
-  #
-  class PullRequest
-    attr_reader :org, :repo
-    def initialize(repo)
-      @org, @repo = repo.split('/')
-    end
+  def client
+    @client ||= Octokit::Client.new(access_token: access_token)
+  end
 
-    def to_s
-      "#{org}/#{repo}\t#{files_url}"
-    end
-
-    def files_url
-      return "(🔒) #{repo_pr_search_url}" if data['message'] == 'Not Found' # Private repo
-      return ' ' unless data['html_url'] # No dependency update PRs
-
-      "#{data['html_url']}/files"
-    end
-
-    private
-
-    def data
-      if json.is_a?(Array)
-        json.first || {}
-      else
-        if json['message'].start_with?('API rate limit exceeded')
-          raise(
-            StandardError,
-            "\n\n😅 Oops! Looks like you've exceeded the API rate limit.\n" \
-            "You may have run this script several times. You can continue to use this\n" \
-            "script but you'll need to generate an access token and re-run with GH_ACCESS_TOKEN.\n" \
-            "See https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/ for more info"
-          )
-        end
-        json
-      end
-    end
-
-    def json
-      @json ||= JSON.parse(`curl -s #{pull_request_api_url}`)
-    end
-
-    def pull_request_api_url
-      addl_params = "\\&access_token\\=#{access_token}" if access_token
-      "https://api.github.com/repos/#{org}/#{repo}/pulls\\?head\\=#{org}:update-dependencies#{addl_params}"
-    end
-
-    def access_token
-      ENV['GH_ACCESS_TOKEN']
-    end
-
-    def repo_pr_search_url
-      "https://github.com/#{org}/#{repo}/pulls?q=is:pr%20update-dependencies%20is:open"
-    end
+  def access_token
+    ENV['GH_ACCESS_TOKEN']
   end
 end
 
