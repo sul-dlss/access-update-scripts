@@ -4,8 +4,8 @@
 #   GITHUB_TOKEN=my-private-token REPOS_PATH=/home/access-update-scripts/infrastructure WORKSPACE=/workspace ./autupdate.sh
 
 SCRIPT_PATH=$(cd "$(dirname "$0")" ; pwd -P)
-REPOS_FILE="${REPOS_PATH:-$SCRIPT_PATH}/projects"
-
+REPOS_FILE="${REPOS_PATH:-$SCRIPT_PATH}/projects.yml"
+REPOS=$(./repos_wanting_update.rb $REPOS_FILE) 
 CLONE_LOCATION=${WORKSPACE:-$TMPDIR}
 
 cd $CLONE_LOCATION
@@ -21,7 +21,8 @@ NPM_SUCCESS_REPORTS_ARRAY=("/dev/null")
 YARN_SUCCESS_REPORTS_ARRAY=("/dev/null")
 
 # Ruby / Rails applications
-while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
+for item in $REPOS; do
+  IFS='/' read org repo <<< "$item"
   retVal=-1
 
   echo "$org/$repo"
@@ -114,7 +115,7 @@ while IFS='/' read -r org repo || [[ -n "$repo" ]]; do
   fi
 
   echo " ===== "
-done < $REPOS_FILE
+done
 
 cd $SCRIPT_PATH
 ./slack_bot.rb "Dependency Updates Shipped!"
