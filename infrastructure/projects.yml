@@ -1,0 +1,34 @@
+projects:
+  - repo: sul-dlss/argo
+  - repo: sul-dlss/common-accessioning
+  - repo: sul-dlss/dlme-transform
+  - repo: sul-dlss/dor-services-app
+  - repo: sul-dlss/dor_indexing_app
+  - repo: sul-dlss/gis-robot-suite
+  - repo: sul-dlss/google-books
+  - repo: sul-dlss/happy-heron
+  - repo: sul-dlss/hydra_etd
+  - repo: sul-dlss/hydrus
+  - repo: sul-dlss/infrastructure-integration-test
+  - repo: sul-dlss/modsulator-app-rails
+  - repo: sul-dlss/pre-assembly
+  - repo: sul-dlss/preservation_catalog
+  - repo: sul-dlss/preservation_robots
+  - repo: sul-dlss/robot-console
+  - repo: sul-dlss/sdr-api
+  - repo: sul-dlss/sul_pub
+  - repo: sul-dlss/suri-rails
+  - repo: sul-dlss/technical-metadata-service
+  - repo: sul-dlss/was_robot_suite
+  - repo: sul-dlss/was-registrar-app
+  - repo: sul-dlss/wasapi-downloader
+  - repo: sul-dlss/workflow-server-rails
+  - repo: LD4P/rdf2marc
+  - repo: LD4P/sinopia_api
+    update: false
+  - repo: LD4P/sinopia_editor
+    update: false
+  - repo: LD4P/sinopia_exporter
+    update: false
+  - repo: LD4P/sinopia_indexing_pipeline
+    update: false

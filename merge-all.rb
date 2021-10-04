@@ -5,16 +5,17 @@
 BRANCH_NAME = 'update-dependencies'
 
 def repos_file
-  File.open("#{ENV['REPOS_PATH']}/projects")
+  File.join ENV['REPOS_PATH'], 'projects.yml'
 end
 
 def repos
-  repos_file.readlines(chomp: true)
+  YAML.load_file(repos_file)
 end
 
 # @return [Array<Hash>] the update PR
-def find_prs(client, repos)
-  repos.map do |repo|
+def find_prs(client, entries)
+  entries.map do |entry|
+    repo = entry.fetch('repo')
     pr, * = client.pull_requests(repo, head: "#{repo.split('/').first}:#{BRANCH_NAME}")
 
     unless pr
