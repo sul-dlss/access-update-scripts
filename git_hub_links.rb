@@ -2,6 +2,7 @@
 
 require 'json'
 require './slack_bot'
+require 'yaml'
 
 ##
 # This script uses the GitHub REST API to get find dependency update PRs for the configured
@@ -11,7 +12,7 @@ require './slack_bot'
 #
 # The GitHub REST API will rate limit you, but not before you would be able to run this script multiple times.
 # If you run into rate limiting issues, you can generate a personal access token and pass it in using the GH_ACCESS_TOKEN env var,
-# "GH_ACCESS_TOKEN=abc123 ./git_hub_links.rb"
+# "GH_ACCESS_TOKEN=abc123 REPOS_PATH=access ./git_hub_links.rb"
 # See https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/ for more info
 class GitHubLinks
   def self.render
@@ -39,11 +40,14 @@ class GitHubLinks
   end
 
   def repos
-    repos_file.to_a.map(&:strip).sort
+    data = YAML.load_file(repos_file)
+    data.fetch('projects').
+      select { |project| project.fetch('update', true) }.
+      map { |project| project.fetch('repo')}.sort
   end
 
   def repos_file
-    File.open("#{ENV['REPOS_PATH']}/projects")
+    File.join(ENV['REPOS_PATH'], "projects.yml")
   end
 
   def client
