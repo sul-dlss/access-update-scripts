@@ -11,7 +11,7 @@ def repos_file
 end
 
 def repos
-  YAML.load_file(repos_file)
+  YAML.load_file(repos_file).fetch('projects')
 end
 
 # @return [Array<Hash>] the update PR
