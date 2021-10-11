@@ -4,6 +4,8 @@
 # "REPOS_PATH=infrastructure GH_ACCESS_TOKEN=abc123 ./merge-all.rb"
 BRANCH_NAME = 'update-dependencies'
 
+require 'yaml'
+
 def repos_file
   File.join ENV['REPOS_PATH'], 'projects.yml'
 end
