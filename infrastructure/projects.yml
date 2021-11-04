@@ -16,6 +16,7 @@ projects:
   - repo: sul-dlss/preservation_robots
   - repo: sul-dlss/robot-console
   - repo: sul-dlss/sdr-api
+  - repo: sul-dlss/sdr-deploy
   - repo: sul-dlss/sul_pub
   - repo: sul-dlss/suri-rails
   - repo: sul-dlss/technical-metadata-service
