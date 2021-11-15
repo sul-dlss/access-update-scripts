@@ -25,7 +25,7 @@ GEM
     faraday_middleware (1.2.0)
       faraday (~> 1.0)
     gli (2.20.1)
-    hashie (4.1.0)
+    hashie (5.0.0)
     highline (2.0.3)
     multipart-post (2.1.1)
     octokit (4.21.0)
