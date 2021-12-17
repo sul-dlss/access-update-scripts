@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 # Usage:
 # "REPOS_PATH=infrastructure GH_ACCESS_TOKEN=abc123 ./merge-all.rb"
@@ -56,7 +57,7 @@ client = Octokit::Client.new(access_token: access_token)
 pr_list = find_prs(client, repos)
 
 if pr_list.empty?
-  puts "No PRs were found"
+  puts 'No PRs were found'
   exit
 end
 
@@ -68,13 +69,12 @@ unless pr_list.all? { |pr| pr[:status] == 'success' }
   exit
 end
 
-
 puts "All #{pr_list.size} of the update PRs are successful and ready to merge."
 require 'highline/import'
-confirm = ask("Do it? [Y/N] ") { |yn| yn.limit = 1, yn.validate = /[yn]/i }
+confirm = ask('Do it? [Y/N] ') { |yn| yn.limit = 1, yn.validate = /[yn]/i }
 exit unless confirm.downcase == 'y'
 
-puts "Merging:"
+puts 'Merging:'
 
 pr_list.each do |pr|
   puts pr[:url]
