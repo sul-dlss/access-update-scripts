@@ -10,6 +10,7 @@ projects:
   - repo: sul-dlss/hydra_etd
   - repo: sul-dlss/hydrus
   - repo: sul-dlss/infrastructure-integration-test
+  - repo: sul-dlss/ksr-app
   - repo: sul-dlss/modsulator-app-rails
   - repo: sul-dlss/pre-assembly
   - repo: sul-dlss/preservation_catalog
