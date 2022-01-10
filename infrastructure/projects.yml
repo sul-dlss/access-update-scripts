@@ -10,9 +10,8 @@ projects:
   - repo: sul-dlss/google-books
   - repo: sul-dlss/happy-heron
   - repo: sul-dlss/hydra_etd
-  - repo: sul-dlss/hydrus
-    cocina_level2: false
   - repo: sul-dlss/infrastructure-integration-test
+  - repo: sul-dlss/ksr-app
   - repo: sul-dlss/modsulator-app-rails
     cocina_level2: false
   - repo: sul-dlss/pre-assembly
