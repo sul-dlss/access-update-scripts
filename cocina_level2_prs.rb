@@ -42,6 +42,7 @@ end
 def create_prs(repos)
   repos.map do |repo|
     pr_link = prepare_and_create_pr(repo)
+    # Print out pr_link to let the user know what it's doing
     p pr_link
     { repo: repo, pr_link: pr_link }
   end
@@ -63,7 +64,7 @@ end
 def create_branch
   ErrorEmittingExecutor.execute("git checkout -B #{BRANCH_NAME}")
 
-  # Ensure local branch matches any existing upstream branch
+  # Ensure local branch matches any existing upstream branch; will reset to HEAD by default
   ErrorEmittingExecutor.execute('git reset --hard', exit_on_error: true)
 end
 
@@ -112,8 +113,6 @@ end
 def update_repo(repo)
   within_cloned_repo_dir(repo) do
     fetch_update
-    # we need local main branch to be up to date if we are creating a branch based on it
-    ErrorEmittingExecutor.execute('git switch main', exit_on_error: true)
     # This allows our default branches to vary across projects
     ErrorEmittingExecutor.execute('git reset --hard $(git symbolic-ref refs/remotes/origin/HEAD)',
                                   exit_on_error: true)
@@ -164,22 +163,22 @@ begin
   if pr_list.all? { |result| result[:pr_link].nil? || result[:pr_link].empty? }
     puts 'No PRs were created.'
     puts '********** End Summary **********'
-    exit
+    exit(1)
   end
 
-  unless pr_list.all? { |result| !result[:pr_link].nil? && !result[:pr_link].empty? }
+  if pr_list.any? { |result| result[:pr_link].nil? || result[:pr_link].empty? }
     puts '*Some* PRs were not created: '
-    pr_list.map do |result|
-      if result[:pr_link].nil? || result[:pr_link].empty?
-        puts "#{result[:repo]} did NOT create a PR for updated cocina gems."
-        puts '********** End Summary **********'
-      end
+    pr_list
+      .select { |result| result[:pr_link].nil? || result[:pr_link].empty? }
+      .each do |result|
+      puts "#{result[:repo]} did NOT create a PR for updated cocina gems."
+      puts '********** End Summary **********'
     end
-    exit
+    exit(1)
   end
 
   puts "All #{pr_list.size} of the cocina gem update PRs were created successfully."
-  pr_list.map { |result| puts "  #{result[:pr_link]}" }
+  pr_list.each { |result| puts "  #{result[:pr_link]}" }
 
   puts '********** End Summary **********'
 end
