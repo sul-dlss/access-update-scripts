@@ -2,7 +2,9 @@ projects:
   - repo: sul-dlss/argo
   - repo: sul-dlss/common-accessioning
   - repo: sul-dlss/dlme-transform
+    cocina_level2: false
   - repo: sul-dlss/dor-services-app
+    cocina_level2: false
   - repo: sul-dlss/dor_indexing_app
   - repo: sul-dlss/gis-robot-suite
   - repo: sul-dlss/google-books
@@ -11,25 +13,40 @@ projects:
   - repo: sul-dlss/infrastructure-integration-test
   - repo: sul-dlss/ksr-app
   - repo: sul-dlss/modsulator-app-rails
+    cocina_level2: false
   - repo: sul-dlss/pre-assembly
   - repo: sul-dlss/preservation_catalog
   - repo: sul-dlss/preservation_robots
+    cocina_level2: false
   - repo: sul-dlss/robot-console
+    cocina_level2: false
   - repo: sul-dlss/sdr-api
+    cocina_level2: false
   - repo: sul-dlss/sdr-deploy
+    cocina_level2: false
   - repo: sul-dlss/sul_pub
+    cocina_level2: false
   - repo: sul-dlss/suri-rails
+    cocina_level2: false
   - repo: sul-dlss/technical-metadata-service
+    cocina_level2: false
   - repo: sul-dlss/was_robot_suite
   - repo: sul-dlss/was-registrar-app
   - repo: sul-dlss/wasapi-downloader
+    cocina_level2: false
   - repo: sul-dlss/workflow-server-rails
+    cocina_level2: false
   - repo: LD4P/rdf2marc
+    cocina_level2: false
   - repo: LD4P/sinopia_api
     update: false
+    cocina_level2: false
   - repo: LD4P/sinopia_editor
     update: false
+    cocina_level2: false
   - repo: LD4P/sinopia_exporter
     update: false
+    cocina_level2: false
   - repo: LD4P/sinopia_indexing_pipeline
     update: false
+    cocina_level2: false
