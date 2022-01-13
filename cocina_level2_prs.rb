@@ -62,7 +62,7 @@ end
 
 # must be called as part of the block for within_cloned_repo_dir(repo)
 def create_branch
-  ErrorEmittingExecutor.execute("git switch -C #{BRANCH_NAME}")
+  ErrorEmittingExecutor.execute("git checkout -B #{BRANCH_NAME}")
 
   # Ensure local branch matches any existing upstream branch; will reset to HEAD by default
   ErrorEmittingExecutor.execute('git reset --hard', exit_on_error: true)

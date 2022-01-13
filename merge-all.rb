@@ -2,8 +2,14 @@
 # frozen_string_literal: true
 
 # Usage:
+#   for update-dependencies PRs for all repos in (team)/projects.yml
 # "REPOS_PATH=infrastructure GH_ACCESS_TOKEN=abc123 ./merge-all.rb"
+#
+#   for infrastructure cocina-level2 PRs only
+#     note that COCINA_LEVEL2= is sufficient to be interpreted as true
+# "REPOS_PATH=infrastructure GH_ACCESS_TOKEN=abc123 COCINA_LEVEL2= ./merge-all.rb"
 BRANCH_NAME = 'update-dependencies'
+COCINA_LEVEL2_BRANCH_NAME = 'cocina-level2-updates'
 
 require 'yaml'
 
@@ -11,21 +17,24 @@ def repos_file
   File.join ENV['REPOS_PATH'], 'projects.yml'
 end
 
-def repos
+def repo_entries
+  return YAML.load_file(repos_file).fetch('projects') unless cocina_level2
+
   YAML.load_file(repos_file).fetch('projects')
+    .select { |project| project.fetch('cocina_level2', true) }
 end
 
 # @return [Array<Hash>] the update PR
 def find_prs(client, entries)
   entries.map do |entry|
     repo = entry.fetch('repo')
-    pr, * = client.pull_requests(repo, head: "#{repo.split('/').first}:#{BRANCH_NAME}")
+    pr, * = client.pull_requests(repo, head: "#{repo.split('/').first}:#{branch_name}")
 
     unless pr
-      warn "no #{BRANCH_NAME} pr found for #{repo}"
+      warn "no #{branch_name} pr found for #{repo}"
       next
     end
-    puts "#{BRANCH_NAME} pr found for #{repo}"
+    puts "#{branch_name} pr found for #{repo}"
     statuses = client.combined_status(repo, pr.head.sha)
     checks = client.check_runs_for_ref(repo, pr.head.sha, accept: Octokit::Preview::PREVIEW_TYPES[:checks])
 
@@ -40,6 +49,14 @@ def find_prs(client, entries)
   end.compact
 end
 
+def branch_name
+  if cocina_level2
+    COCINA_LEVEL2_BRANCH_NAME
+  else
+    BRANCH_NAME
+  end
+end
+
 def status_from(statuses, checks)
   # GitHub API marks PRs with 0 statuses as "pending", we cast that to success
   return 'success' if (statuses.state == 'success' || statuses.total_count.zero?) &&
@@ -52,9 +69,14 @@ def access_token
   ENV['GH_ACCESS_TOKEN']
 end
 
+# anything other than nil or false is true here, just as Ruby intended
+def cocina_level2
+  ENV['COCINA_LEVEL2']
+end
+
 require 'octokit'
 client = Octokit::Client.new(access_token: access_token)
-pr_list = find_prs(client, repos)
+pr_list = find_prs(client, repo_entries)
 
 if pr_list.empty?
   puts 'No PRs were found'
