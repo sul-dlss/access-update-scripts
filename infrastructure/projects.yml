@@ -12,6 +12,7 @@ projects:
   - repo: sul-dlss/hydra_etd
   - repo: sul-dlss/infrastructure-integration-test
   - repo: sul-dlss/ksr-app
+    cocina_level2: false
   - repo: sul-dlss/modsulator-app-rails
     cocina_level2: false
   - repo: sul-dlss/pre-assembly
