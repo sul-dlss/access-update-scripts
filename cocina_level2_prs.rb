@@ -71,9 +71,8 @@ end
 # must be called as part of the block for within_cloned_repo_dir(repo)
 def update_gems
   gemfile = File.read('Gemfile')
-  %w[cocina-models dor-services-client sdr-client].each do |gem_name|
-    ErrorEmittingExecutor.execute("bundle update #{gem_name}") if gemfile.include?(gem_name)
-  end
+  included_gems = %w[cocina-models dor-services-client sdr-client].filter { |gem_name| gemfile.include?(gem_name)}
+  ErrorEmittingExecutor.execute("bundle update #{included_gems.join(' ')}") unless included_gems.empty?
 end
 
 # must be called as part of the block for within_cloned_repo_dir(repo)
