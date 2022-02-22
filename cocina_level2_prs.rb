@@ -43,7 +43,7 @@ def create_prs(repos)
   repos.map do |repo|
     pr_link = prepare_and_create_pr(repo)
     # Print out pr_link to let the user know what it's doing
-    p pr_link
+    puts pr_link
     { repo: repo, pr_link: pr_link }
   end
 end
