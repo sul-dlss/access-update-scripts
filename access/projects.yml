@@ -8,7 +8,6 @@ projects:
   - repo: sul-dlss/earthworks
   - repo: sul-dlss/exhibits
   - repo: sul-dlss/library_hours_rails
-  - repo: sul-dlss/mirador_sul
   - repo: sul-dlss/mise
   - repo: sul-dlss/purl
   - repo: sul-dlss/purl-fetcher
