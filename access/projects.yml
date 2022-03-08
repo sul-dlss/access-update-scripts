@@ -23,4 +23,4 @@ projects:
   - repo: sul-dlss/sul-requests
   - repo: sul-dlss/vatican_exhibits
   - repo: sul-dlss/searchworks-status
-  - repo: ivplus/aggregator
+  - repo: pod4lib/aggregator
