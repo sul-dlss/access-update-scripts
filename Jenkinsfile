@@ -1,10 +1,6 @@
 pipeline {
   agent any
 
-  triggers {
-      cron('H 2 * * 1')
-  }
-
   environment {
     SIDEKIQ_PRO_SECRET = credentials("sidekiq_pro_secret")
     GH_ACCESS_TOKEN = credentials("sul-ci org token")
