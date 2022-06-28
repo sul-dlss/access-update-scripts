@@ -1,11 +1,27 @@
 projects:
   - repo: sul-dlss/argo
+  - repo: sul-dlss/assembly-image
+    cocina_level2: false
+  - repo: sul-dlss/assembly-objectfile
+    cocina_level2: false
+  - repo: sul-dlss/cocina-models
+    cocina_level2: false
   - repo: sul-dlss/common-accessioning
+  - repo: sul-dlss/datacite-ruby
+    cocina_level2: false
   - repo: sul-dlss/dlme-transform
+    cocina_level2: false
+  - repo: sul-dlss/dor-rights-auth
     cocina_level2: false
   - repo: sul-dlss/dor-services-app
     cocina_level2: false
+  - repo: sul-dlss/dor-services-client
+    cocina_level2: false
+  - repo: sul-dlss/dor-workflow-client
+    cocina_level2: false
   - repo: sul-dlss/dor_indexing_app
+  - repo: sul-dlss/druid-tools
+    cocina_level2: false
   - repo: sul-dlss/gis-robot-suite
   - repo: sul-dlss/google-books
   - repo: sul-dlss/happy-heron
@@ -13,15 +29,25 @@ projects:
   - repo: sul-dlss/infrastructure-integration-test
   - repo: sul-dlss/ksr-app
     cocina_level2: false
+  - repo: sul-dlss/lyber-core
+    cocina_level2: false
+  - repo: sul-dlss/moab-versioning
+    cocina_level2: false
   - repo: sul-dlss/modsulator-app-rails
     cocina_level2: false
+  - repo: sul-dlss/parse_date
+    cocina_level2: false
   - repo: sul-dlss/pre-assembly
+  - repo: sul-dlss/preservation-client
+    cocina_level2: false
   - repo: sul-dlss/preservation_catalog
   - repo: sul-dlss/preservation_robots
     cocina_level2: false
   - repo: sul-dlss/robot-console
     cocina_level2: false
   - repo: sul-dlss/sdr-api
+    cocina_level2: false
+  - repo: sul-dlss/sdr-client
     cocina_level2: false
   - repo: sul-dlss/sdr-deploy
     cocina_level2: false
