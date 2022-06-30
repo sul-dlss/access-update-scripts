@@ -43,6 +43,7 @@ projects:
   - repo: sul-dlss/preservation-client
     cocina_level2: false
   - repo: sul-dlss/preservation_catalog
+    cocina_level2: false
   - repo: sul-dlss/preservation_robots
     cocina_level2: false
   - repo: sul-dlss/robot-console
