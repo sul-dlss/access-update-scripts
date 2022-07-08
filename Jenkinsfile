@@ -33,7 +33,7 @@ pipeline {
           export REPOS_PATH=$WORKSPACE/access
 
           # Load RVM
-          rvm use 2.7.1@access_dependency_updates --create
+          rvm use 3.1.2@access_dependency_updates --create
           gem install bundler
           bundle install
 
