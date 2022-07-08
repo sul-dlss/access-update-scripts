@@ -101,7 +101,7 @@ pipeline {
           export REPOS_PATH=$WORKSPACE/libsys
 
           # Load RVM
-          rvm use 2.7.1@libsys_dependency_updates --create
+          rvm use 3.1.2@libsys_dependency_updates --create
           gem install bundler
           bundle install --without production staging
 
