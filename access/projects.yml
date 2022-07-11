@@ -1,7 +1,6 @@
 projects:
   - repo: sul-dlss/access-update-scripts
   - repo: sul-dlss/arclight-demo
-  - repo: sul-dlss/bassi_veratti
   - repo: sul-dlss/content_search
   - repo: sul-dlss/course_reserves
   - repo: sul-dlss/dlme
