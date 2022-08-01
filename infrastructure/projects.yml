@@ -61,6 +61,8 @@ projects:
   - repo: sul-dlss/technical-metadata-service
     cocina_level2: false
   - repo: sul-dlss/was_robot_suite
+  - repo: sul-dlss/was-pywb
+    cocina_level2: false
   - repo: sul-dlss/was-registrar-app
   - repo: sul-dlss/wasapi-downloader
     cocina_level2: false
