@@ -5,7 +5,7 @@
 
 SCRIPT_PATH=$(cd "$(dirname "$0")" ; pwd -P)
 REPOS_FILE="${REPOS_PATH:-$SCRIPT_PATH}/projects.yml"
-REPOS=$(./repos_wanting_update.rb $REPOS_FILE) 
+REPOS=$(./repos_wanting_update.rb $REPOS_FILE)
 CLONE_LOCATION=${WORKSPACE:-$TMPDIR}
 
 cd $CLONE_LOCATION
@@ -118,5 +118,5 @@ for item in $REPOS; do
 done
 
 cd $SCRIPT_PATH
-./slack_bot.rb "Dependency Updates Shipped!"
-./slack_bot.rb "`cat ${GEM_SUCCESS_REPORTS_ARRAY[*]} | grep "(was " | cut -f 2-5 -d " " | sort | uniq`"
+# ./slack_bot.rb "Dependency Updates Shipped!"
+# ./slack_bot.rb "`cat ${GEM_SUCCESS_REPORTS_ARRAY[*]} | grep "(was " | cut -f 2-5 -d " " | sort | uniq`"
