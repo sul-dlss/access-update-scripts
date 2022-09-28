@@ -11,6 +11,8 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/dlme-transform
     cocina_level2: false
+  - repo: sul-dlss/dlss-capistrano-docker
+    cocina_level2: false
   - repo: sul-dlss/dor-event-client
     cocina_level2: false
   - repo: sul-dlss/dor-rights-auth
