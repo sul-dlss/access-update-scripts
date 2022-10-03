@@ -15,8 +15,6 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/dor-event-client
     cocina_level2: false
-  - repo: sul-dlss/dor-rights-auth
-    cocina_level2: false
   - repo: sul-dlss/dor-services-app
     cocina_level2: false
   - repo: sul-dlss/dor-services-client
