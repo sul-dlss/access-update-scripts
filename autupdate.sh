@@ -5,7 +5,7 @@
 
 SCRIPT_PATH=$(cd "$(dirname "$0")" ; pwd -P)
 REPOS_FILE="${REPOS_PATH:-$SCRIPT_PATH}/projects.yml"
-REPOS=$(./repos_wanting_update.rb $REPOS_FILE) 
+REPOS=$(./repos_wanting_update.rb $REPOS_FILE)
 CLONE_LOCATION=${WORKSPACE:-$TMPDIR}
 
 cd $CLONE_LOCATION
@@ -44,12 +44,21 @@ for item in $REPOS; do
   if [[ -f '.autoupdate/update' ]]; then
     .autoupdate/update
   else
+    if test -f '.circleci/config.yml' && grep -q ruby-rails .circleci/config.yml; then
+      latest=$(circleci orb info sul-dlss/ruby-rails | grep 'Latest:' | cut -d@ -f2)
+
+      sed -i -e "s/sul-dlss\/ruby-rails@.*/sul-dlss\/ruby-rails@$latest/" .circleci/config.yml &&
+        git add .circleci/config.yml &&
+        git commit -m "Update CircleCI orb"
+    fi
+
     if [[ -f 'Gemfile.lock' ]]; then
-      bundle update > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt &&
-        git add Gemfile.lock &&
-        git commit -m "Update Ruby dependencies" &&
+      bundle update > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
 
       retVal=$?
+
+      git add Gemfile.lock >> $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt &&
+        git commit -m "Update Ruby dependencies" >> $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
 
       if [ $retVal -ne 0 ]; then
         echo "ERROR UPDATING RUBY ${repo}"
@@ -58,11 +67,12 @@ for item in $REPOS; do
     fi
 
     if [[ -f 'yarn.lock' ]]; then
-      yarn upgrade > $CLONE_LOCATION/.autoupdate/yarn_report/$repo.txt &&
-        git add yarn.lock &&
-        git commit -m "Update Yarn dependencies" &&
+      yarn upgrade > $CLONE_LOCATION/.autoupdate/yarn_report/$repo.txt
 
       retVal=$?
+
+      git add yarn.lock &&
+        git commit -m "Update Yarn dependencies"
 
       if [ $retVal -ne 0 ]; then
         echo "ERROR UPDATING YARN ${repo}"
@@ -72,11 +82,12 @@ for item in $REPOS; do
 
     if [[ -f 'package-lock.json' ]]; then
       npm update > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
-      npm audit fix > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
-      git add package-lock.json package.json &&
-      git commit -m "Update NPM dependencies"
+        npm audit fix > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt
 
       retVal=$?
+
+      git add package-lock.json package.json &&
+        git commit -m "Update NPM dependencies"
 
       if [ $retVal -ne 0 ]; then
         echo "ERROR UPDATING NPM ${repo}"
@@ -94,7 +105,7 @@ for item in $REPOS; do
 
   if [ $retVal -eq 0 ]; then
     git push origin update-dependencies &&
-    hub pull-request -f -m "Update dependencies"
+      hub pull-request -f -m "Update dependencies"
 
     retVal=$?
     if [ $retVal -eq 0 ]; then
