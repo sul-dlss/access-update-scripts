@@ -8,7 +8,7 @@ projects:
   - repo: sul-dlss/exhibits
   - repo: sul-dlss/library_hours_rails
   - repo: sul-dlss/mise
-  - repo: sul-dlss/nta-arclight
+  - repo: sul-dlss/vt-arclight
   - repo: sul-dlss/purl
   - repo: sul-dlss/purl-fetcher
   - repo: sul-dlss/relevancy_dashboard
