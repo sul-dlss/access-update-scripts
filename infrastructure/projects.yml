@@ -24,6 +24,8 @@ projects:
   - repo: sul-dlss/dor_indexing_app
   - repo: sul-dlss/druid-tools
     cocina_level2: false
+  - repo: sul-dlss/folio_client
+    cocina_level2: false
   - repo: sul-dlss/gis-robot-suite
   - repo: sul-dlss/globus_client
     cocina_level2: false
