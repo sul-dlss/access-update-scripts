@@ -36,10 +36,10 @@ def find_prs(client, entries)
     end
     puts "#{branch_name} pr found for #{repo}"
     statuses = client.combined_status(repo, pr.head.sha)
-    checks = client.check_runs_for_ref(repo, pr.head.sha, accept: Octokit::Preview::PREVIEW_TYPES[:checks])
+    checks = client.check_runs_for_ref(repo, pr.head.sha)
 
     begin
-      branch_protection = client.branch_protection(repo, pr.base.ref, accept: Octokit::Preview::PREVIEW_TYPES[:branch_protection])
+      branch_protection = client.branch_protection(repo, pr.base.ref)
       warn "No branch protection is set up for #{repo}" unless branch_protection
     rescue Octokit::NotFound => e
       warn "404 checking branch protection for #{repo}? #{e}"
