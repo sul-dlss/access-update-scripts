@@ -4,7 +4,7 @@
 # ./repos_wanting_update.rb infrastructure/projects.yml
 
 file = ARGV[0]
-if !file || !File.exists?(file)
+if !file || !File.exist?(file)
   $stderr.puts("file not found")
   exit(1)
 end
