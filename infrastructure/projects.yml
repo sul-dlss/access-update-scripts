@@ -1,3 +1,4 @@
+# set merge: false if you want PRs to be ignored when running merge_all
 projects:
   - repo: sul-dlss/argo
   - repo: sul-dlss/assembly-image
@@ -50,6 +51,9 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/preservation_robots
     cocina_level2: false
+  - repo: sul-dlss/rialto-orgs
+    cocina_level2: false
+    merge: false
   - repo: sul-dlss/robot-console
     cocina_level2: false
   - repo: sul-dlss/sdr-api
