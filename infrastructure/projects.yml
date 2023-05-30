@@ -9,8 +9,6 @@ projects:
   - repo: sul-dlss/common-accessioning
   - repo: sul-dlss/datacite-ruby
     cocina_level2: false
-  - repo: sul-dlss/dataloading-management
-    cocina_level2: false
   - repo: sul-dlss/dlme-transform
     cocina_level2: false
   - repo: sul-dlss/dlss-capistrano-docker
