@@ -4,6 +4,10 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/assembly-objectfile
     cocina_level2: false
+  - repo: sul-dlss/assembly-objectfile
+    cocina_level2: false
+  - repo: sul-dlss/blacklight-hierarchy
+    cocina_level2: false
   - repo: sul-dlss/cocina-models
     cocina_level2: false
   - repo: sul-dlss/common-accessioning
