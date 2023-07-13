@@ -37,9 +37,13 @@ projects:
   - repo: sul-dlss/infrastructure-integration-test
   - repo: sul-dlss/lyber-core
     cocina_level2: false
+  - repo: sul-dlss/mais_orcid_client
+    cocina_level2: false
   - repo: sul-dlss/moab-versioning
     cocina_level2: false
   - repo: sul-dlss/modsulator-app-rails
+    cocina_level2: false
+  - repo: sul-dlss/orcid_client
     cocina_level2: false
   - repo: sul-dlss/parse_date
     cocina_level2: false
