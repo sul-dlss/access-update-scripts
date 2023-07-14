@@ -9,6 +9,7 @@ projects:
   - repo: sul-dlss/folio-graphql
   - repo: sul-dlss/library_hours_rails
   - repo: sul-dlss/mise
+  - repo: sul-dlss/mylibrary
   - repo: sul-dlss/vt-arclight
   - repo: sul-dlss/purl
   - repo: sul-dlss/purl-fetcher
