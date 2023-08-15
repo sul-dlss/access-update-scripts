@@ -17,11 +17,15 @@ def repos_file
   File.join ENV['REPOS_PATH'], 'projects.yml'
 end
 
+# return all projects from the project.yml file except those with merge: false set
+#  further filter by cocina_level2: true if ENV file set
 def repo_entries
-  return YAML.load_file(repos_file).fetch('projects') unless cocina_level2
+  projects = YAML.load_file(repos_file).fetch('projects')
+                 .select { |project| project.fetch('merge', true) }
 
-  YAML.load_file(repos_file).fetch('projects')
-    .select { |project| project.fetch('cocina_level2', true) }
+  return projects unless cocina_level2
+
+  projects.select { |project| project.fetch('cocina_level2', true) }
 end
 
 # @return [Array<Hash>] the update PR
