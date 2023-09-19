@@ -26,9 +26,11 @@ BRANCH_NAME = 'cocina-level2-updates'
 GIT_MAIN_FETCH_REFS = '+refs/heads/main:refs/remotes/origin/main'
 GIT_BRANCH_FETCH_REFS = GIT_MAIN_FETCH_REFS.gsub('main', BRANCH_NAME).freeze
 COMMIT_DESCRIPTION = 'Update dependencies for cocina-models update'
-# keeping the old one in case someone has an older git version
-# EXPECTED_PUSH_MESSAGE = "Branch '#{BRANCH_NAME}' set up to track remote branch '#{BRANCH_NAME}' from 'origin'"
-EXPECTED_PUSH_MESSAGE = "branch '#{BRANCH_NAME}' set up to track 'origin/#{BRANCH_NAME}'."
+# the message depends on the locally installed version of git
+EXPECTED_PUSH_MESSAGES = [
+  "Branch '#{BRANCH_NAME}' set up to track remote branch '#{BRANCH_NAME}' from 'origin'",
+  "branch '#{BRANCH_NAME}' set up to track 'origin/#{BRANCH_NAME}'."
+]
 
 def repos_file
   File.join 'infrastructure', 'projects.yml'
@@ -58,7 +60,7 @@ def prepare_and_create_pr(repo)
     result = update_gems unless result_failure?('create_branch', result)
     result = local_git_commit unless result_failure?('update_gems', result)
     result = git_push_origin unless result_failure?('local_git_commit', result)
-    create_pr if result.include?(EXPECTED_PUSH_MESSAGE)
+    create_pr if EXPECTED_PUSH_MESSAGES.find { |msg| result.include?(msg) }
   end
 end
 
