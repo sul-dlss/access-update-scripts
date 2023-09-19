@@ -26,7 +26,9 @@ BRANCH_NAME = 'cocina-level2-updates'
 GIT_MAIN_FETCH_REFS = '+refs/heads/main:refs/remotes/origin/main'
 GIT_BRANCH_FETCH_REFS = GIT_MAIN_FETCH_REFS.gsub('main', BRANCH_NAME).freeze
 COMMIT_DESCRIPTION = 'Update dependencies for cocina-models update'
-EXPECTED_PUSH_MESSAGE = "Branch '#{BRANCH_NAME}' set up to track remote branch '#{BRANCH_NAME}' from 'origin'"
+# keeping the old one in case someone has an older git version
+# EXPECTED_PUSH_MESSAGE = "Branch '#{BRANCH_NAME}' set up to track remote branch '#{BRANCH_NAME}' from 'origin'"
+EXPECTED_PUSH_MESSAGE = "branch '#{BRANCH_NAME}' set up to track 'origin/#{BRANCH_NAME}'."
 
 def repos_file
   File.join 'infrastructure', 'projects.yml'
