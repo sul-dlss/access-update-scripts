@@ -76,7 +76,7 @@ end
 def update_gems
   gemfile = File.read('Gemfile')
   included_gems = %w[cocina-models dor-services-client sdr-client dor_indexing].filter { |gem_name| gemfile.include?(gem_name)}
-  ErrorEmittingExecutor.execute("bundle update #{included_gems.join(' ')}") unless included_gems.empty?
+  ErrorEmittingExecutor.execute("bundle update --conservative #{included_gems.join(' ')}") unless included_gems.empty?
 end
 
 # must be called as part of the block for within_cloned_repo_dir(repo)
