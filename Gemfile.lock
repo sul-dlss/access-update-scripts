@@ -3,7 +3,7 @@ GEM
   specs:
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
-    base64 (0.1.1)
+    base64 (0.2.0)
     faraday (2.7.11)
       base64
       faraday-net_http (>= 2.0, < 3.1)
