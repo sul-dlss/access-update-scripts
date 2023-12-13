@@ -14,6 +14,7 @@ projects:
   - repo: sul-dlss/purl
   - repo: sul-dlss/purl-fetcher
   - repo: sul-dlss/relevancy_dashboard
+  - repo: sul-dlss/sdr-metrics-api
   - repo: sul-dlss/SearchWorks
   - repo: sul-dlss/searchworks_traject_indexer
   - repo: sul-dlss/stacks
