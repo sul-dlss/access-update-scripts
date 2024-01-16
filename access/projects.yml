@@ -8,9 +8,9 @@ projects:
   - repo: sul-dlss/exhibits
   - repo: sul-dlss/folio-graphql
   - repo: sul-dlss/library_hours_rails
+  - repo: sul-dlss/library-status
   - repo: sul-dlss/mise
   - repo: sul-dlss/mylibrary
-  - repo: sul-dlss/vt-arclight
   - repo: sul-dlss/purl
   - repo: sul-dlss/purl-fetcher
   - repo: sul-dlss/relevancy_dashboard
@@ -24,5 +24,5 @@ projects:
   - repo: sul-dlss/sul-embed
   - repo: sul-dlss/sul-requests
   - repo: sul-dlss/vatican_exhibits
-  - repo: sul-dlss/searchworks-status
+  - repo: sul-dlss/vt-arclight
   - repo: pod4lib/aggregator
