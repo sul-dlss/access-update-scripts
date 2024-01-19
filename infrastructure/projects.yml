@@ -25,6 +25,7 @@ projects:
   - repo: sul-dlss/dor-workflow-client
     cocina_level2: false
   - repo: sul-dlss/dor_indexing
+    cocina_level2: false
   - repo: sul-dlss/dor_indexing_app
   - repo: sul-dlss/druid-tools
     cocina_level2: false
