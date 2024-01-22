@@ -1,7 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    abbrev (0.1.2)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
     faraday (2.9.0)
@@ -15,8 +14,7 @@ GEM
       net-http
     gli (2.21.1)
     hashie (5.0.0)
-    highline (3.0.0)
-      abbrev
+    highline (3.0.1)
     multipart-post (2.3.0)
     net-http (0.4.1)
       uri
