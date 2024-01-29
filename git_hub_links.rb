@@ -33,10 +33,10 @@ class GitHubLinks
     end.map(&:to_s).join("\n")
 
     [
-      '*Weekly dependency update time is here!*',
-      "\nBelow you will find the content for our weekly dependency update spreadsheet",
-      "```#{repo_content}```"
-    ].join(' ')
+      "*Weekly dependency update time is here!*\n",
+      "Below you will find the content for our weekly dependency update spreadsheet\n",
+      "```\n#{repo_content}\n```"
+    ].join
   end
 
   def repos
