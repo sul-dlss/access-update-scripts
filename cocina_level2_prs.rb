@@ -76,7 +76,11 @@ end
 def update_gems
   gemfile = File.read('Gemfile')
   included_gems = %w[cocina-models dor-services-client sdr-client dor_indexing].filter { |gem_name| gemfile.include?(gem_name)}
-  ErrorEmittingExecutor.execute("bundle update --conservative #{included_gems.join(' ')}") unless included_gems.empty?
+  # NOTE: --conservative flag can be too aggressive in avoiding updates to dependencies of OUR gems
+  #   e.g. diff-lcs is a tertiary dependency of dor-services-client, so dsc would not be updated
+  # ErrorEmittingExecutor.execute("bundle update --conservative #{included_gems.join(' ')}") unless included_gems.empty?
+  # NOTE: NOT using --conservative flag can mean gems we don't want to update get updated (e.g. rails)
+  ErrorEmittingExecutor.execute("bundle update #{included_gems.join(' ')}") unless included_gems.empty?
 end
 
 # must be called as part of the block for within_cloned_repo_dir(repo)
