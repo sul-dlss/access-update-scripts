@@ -16,7 +16,7 @@ GEM
     gli (2.21.1)
     hashie (5.0.0)
     highline (3.0.1)
-    multipart-post (2.3.0)
+    multipart-post (2.4.0)
     net-http (0.4.1)
       uri
     octokit (8.1.0)
