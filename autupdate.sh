@@ -34,26 +34,13 @@ for item in $REPOS; do
   # This allows our default branches to vary across projects
   git reset --hard $(git symbolic-ref refs/remotes/origin/HEAD)
 
-  if [[ -f '.autoupdate/preupdate' ]]; then
-    .autoupdate/preupdate
-    if [ $? -ne 0 ]; then
-      continue
-    fi
-  fi
+  gem install dlss-capistrano:5.1.1
 
   if [[ -f '.autoupdate/update' ]]; then
     .autoupdate/update
   else
-    if test -f '.circleci/config.yml' && grep -q ruby-rails .circleci/config.yml; then
-      latest=$(circleci orb info sul-dlss/ruby-rails --skip-update-check | grep 'Latest:' | cut -d@ -f2)
-
-      sed -i -e "s/sul-dlss\/ruby-rails@.*/sul-dlss\/ruby-rails@$latest/" .circleci/config.yml &&
-        git add .circleci/config.yml &&
-        git commit -m "Update CircleCI orb"
-    fi
-
     if [[ -f 'Gemfile.lock' ]]; then
-      bundle update > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
+      bundle update --conservative dlss-capistrano > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
 
       retVal=$?
 
@@ -65,42 +52,6 @@ for item in $REPOS; do
         cat $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
       fi
     fi
-
-    if [[ -f 'yarn.lock' ]]; then
-      yarn upgrade > $CLONE_LOCATION/.autoupdate/yarn_report/$repo.txt
-
-      retVal=$?
-
-      git add yarn.lock &&
-        git commit -m "Update Yarn dependencies"
-
-      if [ $retVal -ne 0 ]; then
-        echo "ERROR UPDATING YARN ${repo}"
-        cat $CLONE_LOCATION/.autoupdate/yarn_report/$repo.txt
-      fi
-    fi
-
-    if [[ -f 'package-lock.json' ]]; then
-      npm update > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt &&
-        npm audit fix > $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt
-
-      retVal=$?
-
-      git add package-lock.json package.json &&
-        git commit -m "Update NPM dependencies"
-
-      if [ $retVal -ne 0 ]; then
-        echo "ERROR UPDATING NPM ${repo}"
-        cat $CLONE_LOCATION/.autoupdate/npm_report/$repo.txt
-      fi
-    fi
-  fi
-
-  if [[ -f '.autoupdate/postupdate' ]]; then
-    .autoupdate/postupdate
-    if [ $? -ne 0 ]; then
-      continue
-    fi
   fi
 
   if [ $retVal -eq 0 ]; then
@@ -111,14 +62,6 @@ for item in $REPOS; do
     if [ $retVal -eq 0 ]; then
       if [[ -f 'Gemfile.lock' ]]; then
         GEM_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/gem_report/$repo.txt")
-      fi
-
-      if [[ -f 'yarn.lock' ]]; then
-        YARN_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/yarn_report/$repo.txt")
-      fi
-
-      if [[ -f 'package-lock.json' ]]; then
-        NPM_SUCCESS_REPORTS_ARRAY+=("$CLONE_LOCATION/.autoupdate/npm_report/$repo.txt")
       fi
     else
       echo "ERROR PUSHING ${repo}"
