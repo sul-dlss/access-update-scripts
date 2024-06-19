@@ -16,7 +16,7 @@ pipeline {
 
       when {
         allOf {
-          branch 'master';
+          branch 'main';
           not { triggeredBy 'SCMTrigger' }
         }
       }
@@ -50,7 +50,7 @@ pipeline {
 
       when {
         allOf {
-          branch 'master';
+          branch 'main';
           not { triggeredBy 'SCMTrigger' }
         }
       }
@@ -83,7 +83,7 @@ pipeline {
 
       when {
         allOf {
-          branch 'master';
+          branch 'main';
           not { triggeredBy 'SCMTrigger' }
         }
       }
