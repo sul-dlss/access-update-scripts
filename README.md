@@ -7,8 +7,8 @@ We run dependency updates for Ruby and JavaScript projects once a week via SUL C
 ### Phase 1: Script
 Jenkins run the script and PRs are created via the `sul-devops-team` account. If a pre-existing PR with the title `update-dependencies` is open, a PR is not created. Builds are triggered by the following scenarios:
 - Monday morning before business hours
-- A PR in `access-update-scripts` is merged into master
-  - To kill unnecessary builds: https://sul-ci-prod.stanford.edu/job/SUL-DLSS/job/access-update-scripts/job/master/ ➡️ Build History ➡️ Cancel build button (🆇)
+- A PR in `access-update-scripts` is merged into main
+  - To kill unnecessary builds: https://sul-ci-prod.stanford.edu/job/SUL-DLSS/job/access-update-scripts/job/main/ ➡️ Build History ➡️ Cancel build button (🆇)
 
 ### Phase 2: Reporting
 A gem version report will be sent to the #dlss-access-team slack channel.  The output of the messages can be used to populate the team tracking spreadsheet with links to the PRs.
