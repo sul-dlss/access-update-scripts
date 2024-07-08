@@ -3,8 +3,9 @@ GEM
   specs:
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    faraday (2.9.2)
+    faraday (2.10.0)
       faraday-net_http (>= 2.0, < 3.2)
+      logger
     faraday-mashify (0.1.1)
       faraday (~> 2.0)
       hashie
@@ -15,6 +16,7 @@ GEM
     gli (2.21.1)
     hashie (5.0.0)
     highline (3.0.1)
+    logger (1.6.0)
     multipart-post (2.4.1)
     net-http (0.4.1)
       uri
