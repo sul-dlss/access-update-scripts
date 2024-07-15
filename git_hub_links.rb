@@ -20,7 +20,9 @@ class GitHubLinks
   end
 
   def render
-    SlackBot.new.message(text: slack_bot_content)
+    slack_bot_content.each do |text|
+      SlackBot.new.message(text: text)
+    end
   end
 
   private
@@ -30,13 +32,19 @@ class GitHubLinks
       pr, * = client.pull_requests(repo, head: "#{repo.split('/').first}:update-dependencies")
 
       "#{repo}\t#{pr && "#{pr[:html_url]}/files"}"
-    end.map(&:to_s).join("\n")
+    end.map(&:to_s)
 
-    [
-      "*Weekly dependency update time is here!*\n",
-      "Below you will find the content for our weekly dependency update spreadsheet\n",
-      "```\n#{repo_content}\n```"
-    ].join
+    messages_text(repo_content)
+  end
+
+  def messages_text(repo_content)
+    content_parts = [repo_content.slice(0..39), repo_content.slice(40..100)].compact
+    content_parts.map { |content| "```\n#{content.join("\n")}```" }
+
+    content_parts.prepend(
+      ["*Weekly dependency update time is here!*\n",
+       "Below you will find the content for our weekly dependency update spreadsheet\n"].join
+    )
   end
 
   def repos
