@@ -3,8 +3,9 @@ GEM
   specs:
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    faraday (2.11.0)
+    faraday (2.12.0)
       faraday-net_http (>= 2.0, < 3.4)
+      json
       logger
     faraday-mashify (0.1.1)
       faraday (~> 2.0)
@@ -18,6 +19,7 @@ GEM
     highline (3.1.1)
       reline
     io-console (0.7.2)
+    json (2.7.2)
     logger (1.6.1)
     multipart-post (2.4.1)
     net-http (0.4.1)
