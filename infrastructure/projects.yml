@@ -33,6 +33,7 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/google-books
   - repo: sul-dlss/happy-heron
+  - repo: sul-dlss/hungry-hungry-hippo
   - repo: sul-dlss/hydra_etd
   - repo: sul-dlss/infrastructure-integration-test
   - repo: sul-dlss/lyber-core
