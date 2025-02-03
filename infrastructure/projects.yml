@@ -57,7 +57,6 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/rialto-orgs
     cocina_level2: false
-    merge: false
   - repo: sul-dlss/robot-console
     cocina_level2: false
   - repo: sul-dlss/sdr-api
