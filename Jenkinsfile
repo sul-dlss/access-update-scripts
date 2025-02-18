@@ -73,7 +73,7 @@ pipeline {
           bundle config --global gems.contribsys.com $SIDEKIQ_PRO_SECRET
           ./autupdate.sh
 
-          bundle exec ./git_hub_links.rb
+          bundle exec ./git_hub_links.rb terse
           '''
         }
       }
