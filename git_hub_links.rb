@@ -16,7 +16,11 @@ require 'yaml'
 # See https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/ for more info
 class GitHubLinks
   def self.render
-    new.render
+    new(ARGV.shift).render
+  end
+
+  def initialize(arg)
+    @terse = arg == 'terse'
   end
 
   def render
@@ -25,33 +29,51 @@ class GitHubLinks
 
   private
 
+  def terse?
+    @terse
+  end
+
   def slack_bot_content
     repo_content = repos.map do |repo|
       pr, * = client.pull_requests(repo, head: "#{repo.split('/').first}:update-dependencies")
 
-      "#{repo}\t#{pr && "#{pr[:html_url]}/files"}"
+      repo_line(repo, pr)
     end.map(&:to_s).join("\n")
 
     [
-      "*Weekly dependency update time is here!*\n",
-      "Below you will find the content for our weekly dependency update spreadsheet\n",
-      "```\n#{repo_content}\n```"
+      markdown_preamble,
+      terse? ? repo_content : "```\n#{repo_content}\n```"
     ].join
   end
 
   def repos
     data = YAML.load_file(repos_file)
-    data.fetch('projects').
-      select { |project| project.fetch('update', true) }.
-      map { |project| project.fetch('repo')}.sort
+    data.fetch('projects')
+        .select { |project| project.fetch('update', true) }
+        .map { |project| project.fetch('repo') }.sort
   end
 
   def repos_file
-    File.join(ENV['REPOS_PATH'], "projects.yml")
+    File.join(ENV['REPOS_PATH'], 'projects.yml')
+  end
+
+  def repo_line(repo, pull_request)
+    return "#{repo}\t#{pull_request && "#{pull_request[:html_url]}/files"}" unless terse?
+
+    return "* #{repo}" unless pull_request&.[](:html_url)
+
+    "* [#{repo}](#{pull_request[:html_url]})"
   end
 
   def client
     @client ||= Octokit::Client.new(access_token: access_token)
+  end
+
+  def markdown_preamble
+    return "*Weekly dependency updates:*\n" if terse?
+
+    "*Weekly dependency update time is here!*\n" \
+      "Below you will find the content for our weekly dependency update spreadsheet\n"
   end
 
   def access_token
