@@ -40,10 +40,7 @@ class GitHubLinks
       repo_line(repo, pr)
     end.map(&:to_s).join("\n")
 
-    [
-      markdown_preamble,
-      terse? ? repo_content : "```\n#{repo_content}\n```"
-    ].join
+    "#{markdown_preamble}\n```\n#{repo_content}\n```"
   end
 
   def repos
@@ -60,9 +57,7 @@ class GitHubLinks
   def repo_line(repo, pull_request)
     return "#{repo}\t#{pull_request && "#{pull_request[:html_url]}/files"}" unless terse?
 
-    return "* #{repo}" unless pull_request&.[](:html_url)
-
-    "* [#{repo}](#{pull_request[:html_url]})"
+    pull_request&.[](:html_url) ? pull_request[:html_url] : repo
   end
 
   def client
@@ -70,10 +65,10 @@ class GitHubLinks
   end
 
   def markdown_preamble
-    return "*Weekly dependency updates:*\n" if terse?
+    return "*Weekly dependency updates:*" if terse?
 
     "*Weekly dependency update time is here!*\n" \
-      "Below you will find the content for our weekly dependency update spreadsheet\n"
+      "Below you will find the content for our weekly dependency update spreadsheet"
   end
 
   def access_token
