@@ -53,7 +53,8 @@ for item in $REPOS; do
     fi
 
     if [[ -f 'Gemfile.lock' ]]; then
-      bundle update > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
+      bundle update --bundler > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
+      bundle update >> $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
 
       retVal=$?
 
