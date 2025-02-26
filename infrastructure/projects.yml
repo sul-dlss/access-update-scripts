@@ -55,6 +55,8 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/preservation_robots
     cocina_level2: false
+  - repo: sul-dlss/rialto-airflow
+    cocina_level2: false
   - repo: sul-dlss/rialto-orgs
     cocina_level2: false
   - repo: sul-dlss/robot-console
