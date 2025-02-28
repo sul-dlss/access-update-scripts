@@ -12,6 +12,16 @@ BRANCH_NAME = 'update-dependencies'
 COCINA_LEVEL2_BRANCH_NAME = 'cocina-level2-updates'
 
 require 'yaml'
+require 'optparse'
+
+options = {}
+OptionParser.new do |parser|
+  parser.on("-r", "--release TAG",
+            "Release TAG after merging each PR") do |lib|
+    options[:release_tag] = lib
+  end
+end.parse!
+
 
 def repos_file
   File.join ENV['REPOS_PATH'], 'projects.yml'
@@ -106,4 +116,10 @@ pr_list.each do |pr|
   puts pr[:url]
   client.create_pull_request_review(pr[:repo], pr[:number], body: 'Approved by automated merge script', event: 'APPROVE')
   client.merge_pull_request(pr[:repo], pr[:number], 'Merged by automated merge script')
+
+  if options[:release_tag]
+    # https://github.com/octokit/octokit.rb/issues/1573
+    resp = client.post "#{Octokit::Repository.path pr[:repo]}/releases/generate-notes", { tag_name: options[:release_tag] }
+    client.create_release(pr[:repo], options[:release_tag], **resp)
+  end
 end
