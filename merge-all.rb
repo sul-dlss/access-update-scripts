@@ -8,7 +8,7 @@
 #   for infrastructure cocina-level2 PRs only
 #     note that COCINA_LEVEL2= is sufficient to be interpreted as true
 # "REPOS_PATH=infrastructure GH_ACCESS_TOKEN=abc123 COCINA_LEVEL2= ./merge-all.rb"
-BRANCH_NAME = 'update-dependencies'
+BRANCH_NAME = ENV.fetch('BRANCH_NAME', 'update-dependencies')
 COCINA_LEVEL2_BRANCH_NAME = 'cocina-level2-updates'
 
 require 'yaml'
