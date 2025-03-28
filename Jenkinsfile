@@ -7,6 +7,8 @@ pipeline {
     GH_ACCESS_TOKEN = credentials("sul-ci org token")
   }
 
+  stages {
+
     stage('Infrastructure') {
 
       when {
