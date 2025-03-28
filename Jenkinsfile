@@ -13,7 +13,7 @@ pipeline {
 
       when {
         allOf {
-          branch 'main';
+          branch 'run-speech-to-text';
           not { triggeredBy 'SCMTrigger' }
         }
       }
