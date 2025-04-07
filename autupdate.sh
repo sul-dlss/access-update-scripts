@@ -36,7 +36,13 @@ for item in $REPOS; do
 
   if [[ -f '.autoupdate/preupdate' ]]; then
     .autoupdate/preupdate
-    if [ $? -ne 0 ]; then
+
+    # If a project's preupdate script succeeds and said project does not have any updates in the `update` block below,
+    # such as the speech-to-text project which is pure Python and doesn't use CircleCI, then we need to set retVal here
+    # or else the git commit and push below are short-circuited.
+    retVal=$?
+
+    if [ $retVal -ne 0 ]; then
       continue
     fi
   fi
