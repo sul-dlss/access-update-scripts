@@ -3,6 +3,7 @@ projects:
   - repo: sul-dlss/arclight-demo
   - repo: sul-dlss/content_search
   - repo: sul-dlss/course_reserves
+  - repo: sul-dlss/dataworks-etl
   - repo: sul-dlss/dlme
   - repo: sul-dlss/earthworks
   - repo: sul-dlss/exhibits
