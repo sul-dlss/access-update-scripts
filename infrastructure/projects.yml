@@ -79,6 +79,8 @@ projects:
   - repo: sul-dlss/was-pywb
     cocina_level2: false
   - repo: sul-dlss/was-registrar-app
+  - repo: sul-dlss/wasapi_client
+    cocina_level2: false
   - repo: sul-dlss/wasapi-downloader
     cocina_level2: false
   - repo: sul-dlss/workflow-server-rails
