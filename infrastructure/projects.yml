@@ -22,8 +22,6 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/dor-services-client
     cocina_level2: false
-  - repo: sul-dlss/dor-workflow-client
-    cocina_level2: false
   - repo: sul-dlss/druid-tools
     cocina_level2: false
   - repo: sul-dlss/folio_client
@@ -81,8 +79,6 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/was-registrar-app
   - repo: sul-dlss/wasapi_client
-    cocina_level2: false
-  - repo: sul-dlss/workflow-server-rails
     cocina_level2: false
   - repo: LD4P/rdf2marc
     cocina_level2: false
