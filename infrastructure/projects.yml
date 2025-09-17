@@ -44,8 +44,6 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/orcid_client
     cocina_level2: false
-  - repo: sul-dlss/parse_date
-    cocina_level2: false
   - repo: sul-dlss/pre-assembly
   - repo: sul-dlss/preservation-client
     cocina_level2: false
