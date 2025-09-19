@@ -22,8 +22,6 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/dor-services-client
     cocina_level2: false
-  - repo: sul-dlss/dor-workflow-client
-    cocina_level2: false
   - repo: sul-dlss/druid-tools
     cocina_level2: false
   - repo: sul-dlss/folio_client
@@ -32,9 +30,8 @@ projects:
   - repo: sul-dlss/globus_client
     cocina_level2: false
   - repo: sul-dlss/google-books
-  - repo: sul-dlss/happy-heron
+  - repo: sul-dlss/heracles-etd
   - repo: sul-dlss/hungry-hungry-hippo
-  - repo: sul-dlss/hydra_etd
   - repo: sul-dlss/infrastructure-integration-test
   - repo: sul-dlss/lyber-core
     cocina_level2: false
@@ -46,8 +43,6 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/orcid_client
     cocina_level2: false
-  - repo: sul-dlss/parse_date
-    cocina_level2: false
   - repo: sul-dlss/pre-assembly
   - repo: sul-dlss/preservation-client
     cocina_level2: false
@@ -55,9 +50,10 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/preservation_robots
     cocina_level2: false
+  - repo: sul-dlss/rialto-airflow
+    cocina_level2: false
   - repo: sul-dlss/rialto-orgs
     cocina_level2: false
-    merge: false
   - repo: sul-dlss/robot-console
     cocina_level2: false
   - repo: sul-dlss/sdr-api
@@ -65,6 +61,8 @@ projects:
   - repo: sul-dlss/sdr-client
     cocina_level2: false
   - repo: sul-dlss/sdr-deploy
+    cocina_level2: false
+  - repo: sul-dlss/speech-to-text
     cocina_level2: false
   - repo: sul-dlss/sul_pub
     cocina_level2: false
@@ -76,9 +74,7 @@ projects:
   - repo: sul-dlss/was-pywb
     cocina_level2: false
   - repo: sul-dlss/was-registrar-app
-  - repo: sul-dlss/wasapi-downloader
-    cocina_level2: false
-  - repo: sul-dlss/workflow-server-rails
+  - repo: sul-dlss/wasapi_client
     cocina_level2: false
   - repo: LD4P/rdf2marc
     cocina_level2: false
@@ -94,3 +90,4 @@ projects:
   - repo: LD4P/sinopia_indexing_pipeline
     update: false
     cocina_level2: false
+
