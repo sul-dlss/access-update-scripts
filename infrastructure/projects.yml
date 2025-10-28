@@ -9,7 +9,6 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/common-accessioning
   - repo: sul-dlss/datacite-ruby
-    cocina_level2: false
   - repo: sul-dlss/dlme-airflow
     cocina_level2: false
   - repo: sul-dlss/dlme-transform
