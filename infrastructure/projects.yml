@@ -36,6 +36,8 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/mais_orcid_client
     cocina_level2: false
+  - repo: sul-dlss/mais_person_client
+    cocina_level2: false
   - repo: sul-dlss/moab-versioning
     cocina_level2: false
   - repo: sul-dlss/modsulator-app-rails
