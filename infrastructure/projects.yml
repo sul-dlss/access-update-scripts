@@ -1,6 +1,7 @@
 # set merge: false if you want PRs to be ignored when running merge_all
 projects:
   - repo: sul-dlss/argo
+  - repo: sul-dlss/argo-b3
   - repo: sul-dlss/assembly-image
     cocina_level2: false
   - repo: sul-dlss/assembly-objectfile
