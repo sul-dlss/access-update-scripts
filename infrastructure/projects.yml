@@ -33,6 +33,8 @@ projects:
   - repo: sul-dlss/heracles-etd
   - repo: sul-dlss/hungry-hungry-hippo
   - repo: sul-dlss/infrastructure-integration-test
+  - repo: sul-dlss/json_schemer-rails
+    cocina_level2: false
   - repo: sul-dlss/lyber-core
     cocina_level2: false
   - repo: sul-dlss/mais_orcid_client
