@@ -68,6 +68,8 @@ projects:
     cocina_level2: false
   - repo: sul-dlss/sdr-deploy
     cocina_level2: false
+  - repo: sul-dlss/sdr_view_components
+    cocina_level2: false
   - repo: sul-dlss/speech-to-text
     cocina_level2: false
   - repo: sul-dlss/sul_pub
