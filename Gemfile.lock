@@ -12,7 +12,7 @@ GEM
       hashie
     faraday-multipart (1.2.0)
       multipart-post (~> 2.0)
-    faraday-net_http (3.4.2)
+    faraday-net_http (3.4.3)
       net-http (~> 0.5)
     gli (2.22.2)
       ostruct
@@ -55,4 +55,4 @@ DEPENDENCIES
   slack-ruby-client
 
 BUNDLED WITH
-  4.0.11
+  4.0.12
