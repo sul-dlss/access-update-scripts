@@ -1,36 +1,51 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# Usage:
-#   for update-dependencies PRs for all repos in (team)/projects.yml
-# "REPOS_PATH=infrastructure GH_ACCESS_TOKEN=abc123 ./merge-all.rb"
+# === Usage ===
 #
-#   for infrastructure cocina-level2 PRs only
-#     note that COCINA_LEVEL2= is sufficient to be interpreted as true
-# "REPOS_PATH=infrastructure GH_ACCESS_TOKEN=abc123 COCINA_LEVEL2= ./merge-all.rb"
-BRANCH_NAME = ENV.fetch('BRANCH_NAME', 'update-dependencies')
-COCINA_LEVEL2_BRANCH_NAME = 'cocina-level2-updates'
+# To generate update-dependencies PRs for all repos in <REPOS_PATH>/projects.yml:
+#
+#   $ REPOS_PATH=infrastructure GITHUB_TOKEN=abc123 ./merge-all.rb
+#
+# To generate PRs only for projects that rely on Cocina updates:
+#
+#   $ REPOS_PATH=infrastructure GITHUB_TOKEN=abc123 COCINA_LEVEL2= ./merge-all.rb
+#
+# NOTE: The above variables may also be set as environment variables instead, in
+#       which case they will be picked up by the script without needing to be
+#       passed in on the command line.
 
+require 'highline/import'
+require 'octokit'
 require 'yaml'
 
-def repos_file
-  File.join ENV['REPOS_PATH'], 'projects.yml'
+REPOSITORIES_FILE = File.join(ENV.fetch('REPOS_PATH'), 'projects.yml')
+COCINA_LEVEL2 = ENV['COCINA_LEVEL2']
+BRANCH_NAME = ENV.fetch('BRANCH_NAME', 'update-dependencies')
+COCINA_LEVEL2_BRANCH_NAME = ENV.fetch('COCINA_LEVEL2_BRANCH_NAME', 'cocina-level2-updates')
+
+def access_token
+  @access_token = ENV['GITHUB_TOKEN'] || ENV['GH_ACCESS_TOKEN']
+  raise 'GITHUB_TOKEN variable must be set' if @access_token.nil? || @access_token.empty?
+
+  @access_token
 end
 
-# return all projects from the project.yml file except those with merge: false set
-#  further filter by cocina_level2: true if ENV file set
-def repo_entries
-  projects = YAML.load_file(repos_file).fetch('projects')
-                 .select { |project| project.fetch('merge', true) }
+def projects
+  @projects = YAML.load_file(REPOSITORIES_FILE).fetch('projects').select { |project| project.fetch('merge', true) }
+end
 
-  return projects unless cocina_level2
+# return all projects from the projects.yml file except those with `merge: false` set.
+# further filter by `cocina_level2: true` if ENV variable set
+def repo_entries
+  return projects unless COCINA_LEVEL2
 
   projects.select { |project| project.fetch('cocina_level2', true) }
 end
 
 # @return [Array<Hash>] the update PR
 def find_prs(client, entries)
-  entries.map do |entry|
+  entries.filter_map do |entry|
     repo = entry.fetch('repo')
     pr, * = client.pull_requests(repo, head: "#{repo.split('/').first}:#{branch_name}")
 
@@ -38,6 +53,7 @@ def find_prs(client, entries)
       warn "no #{branch_name} pr found for #{repo}"
       next
     end
+
     puts "#{branch_name} pr found for #{repo}"
     statuses = client.combined_status(repo, pr.head.sha)
     checks = client.check_runs_for_ref(repo, pr.head.sha)
@@ -46,15 +62,15 @@ def find_prs(client, entries)
       branch_protection = client.branch_protection(repo, pr.base.ref)
       warn "No branch protection is set up for #{repo}" unless branch_protection
     rescue Octokit::NotFound => e
-      warn "404 checking branch protection for #{repo}? #{e}"
+      warn "404 checking branch protection for #{repo}: #{e}"
     end
 
     { repo: repo, number: pr.number, url: pr.html_url, status: status_from(statuses, checks) }
-  end.compact
+  end
 end
 
 def branch_name
-  if cocina_level2
+  if COCINA_LEVEL2
     COCINA_LEVEL2_BRANCH_NAME
   else
     BRANCH_NAME
@@ -63,42 +79,29 @@ end
 
 def status_from(statuses, checks)
   # GitHub API marks PRs with 0 statuses as "pending", we cast that to success
-  return 'success' if (statuses.state == 'success' || statuses.total_count.zero?) &&
-                      checks.check_runs.map(&:conclusion).all? { |status| status == 'success' }
-
-  'failure'
+  (statuses.state == 'success' || statuses.total_count.zero?) &&
+    checks.check_runs.map(&:conclusion).all? { |status| status == 'success' }
 end
 
-def access_token
-  ENV['GH_ACCESS_TOKEN']
-end
-
-# anything other than nil or false is true here, just as Ruby intended
-def cocina_level2
-  ENV['COCINA_LEVEL2']
-end
-
-require 'octokit'
-client = Octokit::Client.new(access_token: access_token)
+client = Octokit::Client.new(access_token:)
 pr_list = find_prs(client, repo_entries)
 
 if pr_list.empty?
   puts 'No PRs were found'
-  exit
+  exit 1
 end
 
-unless pr_list.all? { |pr| pr[:status] == 'success' }
+unless pr_list.all? { |pr| pr[:status] }
   puts '*No* PRs were merged because these PRs are not passing: '
-  pr_list.filter { |pr| pr[:status] != 'success' }.each do |pr|
+  pr_list.reject { |pr| pr[:status] }.each do |pr|
     puts "#{pr[:status]} - #{pr[:url]}"
   end
-  exit
+  exit 1
 end
 
 puts "All #{pr_list.size} of the update PRs are successful and ready to merge."
-require 'highline/import'
 confirm = ask('Do it? [Y/N] ') { |yn| yn.limit = 1, yn.validate = /[yn]/i }
-exit unless confirm.downcase == 'y'
+exit 0 unless confirm.downcase == 'y'
 
 puts 'Merging:'
 
@@ -107,3 +110,5 @@ pr_list.each do |pr|
   client.create_pull_request_review(pr[:repo], pr[:number], body: 'Approved by automated merge script', event: 'APPROVE')
   client.merge_pull_request(pr[:repo], pr[:number], 'Merged by automated merge script')
 end
+
+exit 0
