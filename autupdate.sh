@@ -53,9 +53,16 @@ for item in $REPOS; do
     if test -f '.circleci/config.yml' && grep -q ruby-rails .circleci/config.yml; then
       latest=$(circleci orb info sul-dlss/ruby-rails --skip-update-check | grep 'Latest:' | cut -d@ -f2)
 
-      sed -i -e "s/sul-dlss\/ruby-rails@.*/sul-dlss\/ruby-rails@$latest/" .circleci/config.yml &&
-        git add .circleci/config.yml &&
+      sed -i -e "s/sul-dlss\/ruby-rails@.*/sul-dlss\/ruby-rails@$latest/" .circleci/config.yml
+
+      retVal=$?
+
+      git add .circleci/config.yml && 
         git commit -m "Update CircleCI orb"
+
+      if [ $retVal -ne 0 ]; then
+        echo "ERROR UPDATING CIRCLECI ORB ${repo}"
+      fi
     fi
 
     if [[ -f 'Gemfile.lock' ]]; then
