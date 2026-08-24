@@ -7,7 +7,7 @@ GEM
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
-    faraday-mashify (1.0.2)
+    faraday-mashify (1.0.3)
       faraday (~> 2.0)
       hashie
     faraday-multipart (1.2.0)
@@ -55,4 +55,4 @@ DEPENDENCIES
   slack-ruby-client
 
 BUNDLED WITH
-  4.0.18
+  4.0.19
