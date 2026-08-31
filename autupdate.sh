@@ -51,13 +51,13 @@ for item in $REPOS; do
     .autoupdate/update
   else
     if test -f '.circleci/config.yml' && grep -q ruby-rails .circleci/config.yml; then
-      latest=$(circleci orb info sul-dlss/ruby-rails --skip-update-check | grep 'Latest:' | cut -d@ -f2)
+      latest=$(circleci orb list sul-dlss --json | jq -r '.[] | select(.name=="sul-dlss/ruby-rails") | .latest_version')
 
       sed -i -e "s/sul-dlss\/ruby-rails@.*/sul-dlss\/ruby-rails@$latest/" .circleci/config.yml
 
       retVal=$?
 
-      git add .circleci/config.yml && 
+      git add .circleci/config.yml &&
         git commit -m "Update CircleCI orb"
 
       if [ $retVal -ne 0 ]; then
