@@ -9,6 +9,7 @@ pipeline {
     SIDEKIQ_PRO_SECRET = credentials("sidekiq_pro_secret")
     ACCESS_TEAM_SLACK_API_TOKEN = credentials("access-team-slack-token")
     GH_ACCESS_TOKEN = credentials("sul-ci org token")
+    CIRCLE_TOKEN = credentials("circle_token")
   }
 
   stages {
@@ -71,6 +72,15 @@ pipeline {
           bundle install
 
           bundle config --global gems.contribsys.com $SIDEKIQ_PRO_SECRET
+
+          # Fail the build if the CircleCI API token is missing or expired. Without this,
+          # autupdate.sh only logs the lookup failure per repo and still opens PRs, so
+          # orb updates would silently stop across every project.
+          if [ -z "$(circleci orb get sul-dlss/ruby-rails --json --jq '.latest_version')" ]; then
+            echo "ERROR LOOKING UP LATEST CIRCLECI ORB VERSION -- check the circle_token credential"
+            exit 1
+          fi
+
           ./autupdate.sh
 
           bundle exec ./git_hub_links.rb terse

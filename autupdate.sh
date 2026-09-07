@@ -8,6 +8,19 @@ REPOS_FILE="${REPOS_PATH:-$SCRIPT_PATH}/projects.yml"
 REPOS=$(./repos_wanting_update.rb $REPOS_FILE)
 CLONE_LOCATION=${WORKSPACE:-$TMPDIR}
 
+# `bundle update --bundler` with no version selects the highest bundler on rubygems,
+# including prereleases, and writes it to BUNDLED WITH in every project's Gemfile.lock.
+# Look up the latest stable release once and pin to it instead. This asks rubygems
+# directly rather than shelling out to `gem`, which resolves to the system Ruby here
+# while GEM_HOME still points at the RVM gemset.
+STABLE_BUNDLER=$(curl -sS https://rubygems.org/api/v1/versions/bundler/latest.json |
+  sed -n 's/.*"version":"\([^"]*\)".*/\1/p')
+
+if [ -z "$STABLE_BUNDLER" ]; then
+  echo "ERROR LOOKING UP LATEST STABLE BUNDLER VERSION"
+  exit 1
+fi
+
 cd $CLONE_LOCATION
 mkdir -p $CLONE_LOCATION/.autoupdate
 cd $CLONE_LOCATION/.autoupdate
@@ -51,22 +64,26 @@ for item in $REPOS; do
     .autoupdate/update
   else
     if test -f '.circleci/config.yml' && grep -q ruby-rails .circleci/config.yml; then
-      latest=$(circleci orb info sul-dlss/ruby-rails --skip-update-check | grep 'Latest:' | cut -d@ -f2)
+      latest=$(circleci orb get sul-dlss/ruby-rails --json --jq '.latest_version')
 
-      sed -i -e "s/sul-dlss\/ruby-rails@.*/sul-dlss\/ruby-rails@$latest/" .circleci/config.yml
+      if [ -z "$latest" ]; then
+        echo "ERROR LOOKING UP LATEST CIRCLECI ORB VERSION ${repo}"
+      else
+        sed -i -e "s/sul-dlss\/ruby-rails@.*/sul-dlss\/ruby-rails@$latest/" .circleci/config.yml
 
-      retVal=$?
+        retVal=$?
 
-      git add .circleci/config.yml && 
-        git commit -m "Update CircleCI orb"
+        git add .circleci/config.yml &&
+          git commit -m "Update CircleCI orb"
 
-      if [ $retVal -ne 0 ]; then
-        echo "ERROR UPDATING CIRCLECI ORB ${repo}"
+        if [ $retVal -ne 0 ]; then
+          echo "ERROR UPDATING CIRCLECI ORB ${repo}"
+        fi
       fi
     fi
 
     if [[ -f 'Gemfile.lock' ]]; then
-      bundle update --bundler > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
+      bundle update --bundler="$STABLE_BUNDLER" > $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
       bundle update >> $CLONE_LOCATION/.autoupdate/gem_report/$repo.txt
 
       retVal=$?
