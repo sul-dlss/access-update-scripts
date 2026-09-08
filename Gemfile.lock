@@ -51,6 +51,7 @@ PLATFORMS
 
 DEPENDENCIES
   highline
+  json (~> 2.0)
   octokit
   slack-ruby-client
 
