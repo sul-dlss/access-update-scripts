@@ -57,7 +57,7 @@ for item in $REPOS; do
 
       retVal=$?
 
-      git add .circleci/config.yml && 
+      git add .circleci/config.yml &&
         git commit -m "Update CircleCI orb"
 
       if [ $retVal -ne 0 ]; then
@@ -118,8 +118,8 @@ for item in $REPOS; do
   fi
 
   if [ $retVal -eq 0 ]; then
-    git push origin update-dependencies &&
-      hub pull-request -f -m "Update dependencies"
+    git push -f origin update-dependencies &&
+      hub pull-request -f -m "Update dependencies" 2>/dev/null || true
 
     retVal=$?
     if [ $retVal -eq 0 ]; then
