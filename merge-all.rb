@@ -11,6 +11,7 @@
 BRANCH_NAME = ENV.fetch('BRANCH_NAME', 'update-dependencies')
 COCINA_LEVEL2_BRANCH_NAME = 'cocina-level2-updates'
 
+require 'bundler/setup'
 require 'yaml'
 
 def repos_file
