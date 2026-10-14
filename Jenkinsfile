@@ -67,7 +67,7 @@ pipeline {
           export REPOS_PATH=$WORKSPACE/infrastructure
 
           # Load RVM
-          rvm use 3.4.1@infrastructure_dependency_updates --create
+          rvm use 4.0.7@infrastructure_dependency_updates --create
           gem install bundler
           bundle install
 
