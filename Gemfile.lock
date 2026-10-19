@@ -3,8 +3,8 @@ GEM
   specs:
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
-    faraday (2.14.4)
-      faraday-net_http (>= 2.0, < 3.5)
+    faraday (2.15.0)
+      faraday-net_http (>= 2.0, < 3.6)
       json
       logger
     faraday-mashify (1.0.3)
@@ -12,7 +12,7 @@ GEM
       hashie
     faraday-multipart (1.2.0)
       multipart-post (~> 2.0)
-    faraday-net_http (3.4.4)
+    faraday-net_http (3.5.0)
       net-http (~> 0.5)
     hashie (5.1.0)
       logger
@@ -56,4 +56,4 @@ DEPENDENCIES
   slack-ruby-client
 
 BUNDLED WITH
-  4.0.22
+  4.0.23
